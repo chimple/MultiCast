@@ -8,9 +8,8 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.SocketException;
 
-import static org.chimple.flores.application.P2PApplication.messageEvent;
+import static org.chimple.flores.application.P2PContext.messageEvent;
 
 public class MulticastListenerThread extends MulticastThread {
     private static final String TAG = MulticastListenerThread.class.getSimpleName();

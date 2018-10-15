@@ -10,7 +10,7 @@ import org.chimple.flores.db.entity.P2PSyncInfo;
 import org.chimple.flores.db.entity.P2PUserIdDeviceIdAndMessage;
 import org.chimple.flores.db.entity.P2PUserIdMessage;
 
-import static org.chimple.flores.application.P2PApplication.SHARED_PREF;
+import static org.chimple.flores.application.P2PContext.SHARED_PREF;
 
 public class DBSyncManager {
 

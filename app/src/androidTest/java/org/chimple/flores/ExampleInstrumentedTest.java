@@ -13,10 +13,7 @@ import org.chimple.flores.application.P2PApplication;
 import org.chimple.flores.db.AppDatabase;
 import org.chimple.flores.db.P2PDBApiImpl;
 import org.chimple.flores.db.dao.P2PSyncInfoDao;
-import org.chimple.flores.db.entity.HandShakingInfo;
-import org.chimple.flores.db.entity.HandShakingMessage;
 import org.chimple.flores.db.entity.P2PSyncInfo;
-import org.chimple.flores.db.entity.P2PUserIdMessage;
 import org.chimple.flores.multicast.MulticastManager;
 import org.junit.After;
 import org.junit.Before;
@@ -26,16 +23,13 @@ import org.junit.runner.RunWith;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 import kotlin.jvm.JvmField;
 
-import static org.chimple.flores.application.P2PApplication.SHARED_PREF;
+import static org.chimple.flores.application.P2PContext.SHARED_PREF;
 import static org.junit.Assert.assertEquals;
 
 

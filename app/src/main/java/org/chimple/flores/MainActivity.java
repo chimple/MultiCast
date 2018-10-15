@@ -17,15 +17,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.chimple.flores.application.P2PApplication;
+import org.chimple.flores.application.P2PContext;
 import org.chimple.flores.multicast.MulticastManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.chimple.flores.application.P2PApplication.CLEAR_CONSOLE_TYPE;
-import static org.chimple.flores.application.P2PApplication.NEW_MESSAGE_ADDED;
-import static org.chimple.flores.application.P2PApplication.newMessageAddedOnDevice;
-import static org.chimple.flores.application.P2PApplication.refreshDevice;
+import static org.chimple.flores.application.P2PContext.CLEAR_CONSOLE_TYPE;
+import static org.chimple.flores.application.P2PContext.refreshDevice;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         this.consoleView = (TextView) findViewById(R.id.consoleTextView);
         this.logView = (TextView) findViewById(R.id.logTextView);
         this.messageToSendField = (EditText) findViewById(R.id.messageToSend);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(P2PApplication.uiMessageEvent));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(P2PContext.uiMessageEvent));
         broadCastRefreshDevice();
     }
 
@@ -135,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
             // Get extra data included in the Intent
             String message = intent.getStringExtra("message");
             String type = intent.getStringExtra("type");
-            if(type.equals(P2PApplication.CONSOLE_TYPE)) {
+            if(type.equals(P2PContext.CONSOLE_TYPE)) {
                 that.outputTextToConsole(message);
-            } else if (type.equals(P2PApplication.LOG_TYPE)) {
+            } else if (type.equals(P2PContext.LOG_TYPE)) {
                 that.outputTextToLog(message);
             } else if(type.equals(CLEAR_CONSOLE_TYPE)) {
                 that.clearConsole();

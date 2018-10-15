@@ -35,8 +35,6 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.google.gson.stream.JsonWriter;
-
 import org.chimple.flores.application.P2PApplication;
 import org.chimple.flores.db.entity.HandShakingInfo;
 import org.chimple.flores.db.entity.HandShakingInfoDeserializer;
@@ -57,12 +55,10 @@ import org.chimple.flores.db.entity.SyncItemDeserializer;
 import org.chimple.flores.db.entity.SyncRequestMessageDeserializer;
 import org.chimple.flores.multicast.MulticastManager;
 
-import static org.chimple.flores.application.P2PApplication.CONSOLE_TYPE;
-import static org.chimple.flores.application.P2PApplication.NEW_MESSAGE_ADDED;
-import static org.chimple.flores.application.P2PApplication.SHARED_PREF;
-import static org.chimple.flores.application.P2PApplication.USER_ID;
-import static org.chimple.flores.application.P2PApplication.newMessageAddedOnDevice;
-import static org.chimple.flores.multicast.MulticastManager.multiCastConnectionChangedEvent;
+import static org.chimple.flores.application.P2PContext.CONSOLE_TYPE;
+import static org.chimple.flores.application.P2PContext.NEW_MESSAGE_ADDED;
+import static org.chimple.flores.application.P2PContext.SHARED_PREF;
+import static org.chimple.flores.application.P2PContext.newMessageAddedOnDevice;
 
 public class P2PDBApiImpl {
     private static final String TAG = P2PDBApiImpl.class.getName();

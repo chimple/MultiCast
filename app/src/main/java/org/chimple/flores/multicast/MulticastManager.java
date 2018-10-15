@@ -10,16 +10,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.bag.SynchronizedBag;
-import org.chimple.flores.application.NetworkUtil;
 import org.chimple.flores.application.P2PApplication;
+import org.chimple.flores.application.P2PContext;
 import org.chimple.flores.db.DBSyncManager;
 import org.chimple.flores.db.P2PDBApiImpl;
 import org.chimple.flores.db.entity.HandShakingInfo;
 import org.chimple.flores.db.entity.HandShakingMessage;
 import org.chimple.flores.db.entity.P2PSyncInfo;
 import org.chimple.flores.db.entity.SyncInfoItem;
-import org.chimple.flores.db.entity.SyncInfoMessage;
 import org.chimple.flores.db.entity.SyncInfoRequestMessage;
 
 import java.util.ArrayList;
@@ -35,14 +33,13 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.chimple.flores.application.P2PApplication.CLEAR_CONSOLE_TYPE;
-import static org.chimple.flores.application.P2PApplication.CONSOLE_TYPE;
-import static org.chimple.flores.application.P2PApplication.LOG_TYPE;
-import static org.chimple.flores.application.P2PApplication.MULTICAST_IP_ADDRESS;
-import static org.chimple.flores.application.P2PApplication.MULTICAST_IP_PORT;
-import static org.chimple.flores.application.P2PApplication.NEW_MESSAGE_ADDED;
-import static org.chimple.flores.application.P2PApplication.REFRESH_DEVICE;
-import static org.chimple.flores.application.P2PApplication.uiMessageEvent;
+import static org.chimple.flores.application.P2PContext.CLEAR_CONSOLE_TYPE;
+import static org.chimple.flores.application.P2PContext.CONSOLE_TYPE;
+import static org.chimple.flores.application.P2PContext.LOG_TYPE;
+import static org.chimple.flores.application.P2PContext.MULTICAST_IP_ADDRESS;
+import static org.chimple.flores.application.P2PContext.MULTICAST_IP_PORT;
+import static org.chimple.flores.application.P2PContext.NEW_MESSAGE_ADDED;
+import static org.chimple.flores.application.P2PContext.uiMessageEvent;
 
 public class MulticastManager {
 
@@ -197,9 +194,9 @@ public class MulticastManager {
 
     private void registerMulticastBroadcasts() {
         LocalBroadcastManager.getInstance(this.context).registerReceiver(netWorkChangerReceiver, new IntentFilter(multiCastConnectionChangedEvent));
-        LocalBroadcastManager.getInstance(this.context).registerReceiver(mMessageEventReceiver, new IntentFilter(P2PApplication.messageEvent));
-        LocalBroadcastManager.getInstance(this.context).registerReceiver(newMessageAddedReceiver, new IntentFilter(P2PApplication.newMessageAddedOnDevice));
-        LocalBroadcastManager.getInstance(this.context).registerReceiver(refreshDeviceReceiver, new IntentFilter(P2PApplication.refreshDevice));
+        LocalBroadcastManager.getInstance(this.context).registerReceiver(mMessageEventReceiver, new IntentFilter(P2PContext.messageEvent));
+        LocalBroadcastManager.getInstance(this.context).registerReceiver(newMessageAddedReceiver, new IntentFilter(P2PContext.newMessageAddedOnDevice));
+        LocalBroadcastManager.getInstance(this.context).registerReceiver(refreshDeviceReceiver, new IntentFilter(P2PContext.refreshDevice));
     }
 
 
