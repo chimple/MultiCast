@@ -31,25 +31,32 @@ public class HandShakingInfo {
     @Expose(serialize = true, deserialize = true)
     private Long sequence;
 
-    @Expose(serialize = false, deserialize = false)
+    @Expose(serialize = true, deserialize = true)
     private Long startingSequence;
 
-    @Expose(serialize = false, deserialize = false)
+    @Expose(serialize = true, deserialize = true)
     private String from;
 
+    @Expose(serialize = true, deserialize = true)
+    private String missingMessages;
 
     public HandShakingInfo() {
     }
 
 
-    public HandShakingInfo(String userId, String deviceId, Long sequence) {
+    public HandShakingInfo(String userId, String deviceId, Long sequence, String missingMessages) {
         this.userId = userId;
         this.deviceId = deviceId;
         this.sequence = sequence;
+        this.missingMessages = missingMessages;
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getMissingMessages() {
+        return missingMessages;
     }
 
     public String getDeviceId() {
@@ -66,6 +73,10 @@ public class HandShakingInfo {
 
     public void setStartingSequence(Long startingSequence) {
         this.startingSequence = startingSequence;
+    }
+
+    public void setMissingMessages(String missingMessages) {
+        this.missingMessages = missingMessages;
     }
 
     public String getFrom() {
@@ -89,14 +100,14 @@ public class HandShakingInfo {
         if (this == info) {
             return true;
         } else {
-            return (this.userId.equals(info.userId) && this.deviceId.equals(info.deviceId) && this.sequence.longValue() == info.sequence.longValue());
+            return (this.userId.equals(info.userId) && this.missingMessages.equals(info.missingMessages) && this.deviceId.equals(info.deviceId) && this.sequence.longValue() == info.sequence.longValue());
         }
     }
 
 
     public int hashCode() {
         int hashno = 7;
-        hashno = 13 * hashno + (userId == null ? 0 : userId.hashCode()) + (deviceId == null ? 0 : deviceId.hashCode()) + (sequence == null ? 0 : sequence.hashCode());
+        hashno = 13 * hashno + (userId == null ? 0 : userId.hashCode()) + (missingMessages == null ? 0 : missingMessages.hashCode()) +(deviceId == null ? 0 : deviceId.hashCode()) + (sequence == null ? 0 : sequence.hashCode());
         return hashno;
     }
 }

@@ -13,6 +13,7 @@ import org.chimple.flores.application.P2PApplication;
 import org.chimple.flores.db.AppDatabase;
 import org.chimple.flores.db.P2PDBApiImpl;
 import org.chimple.flores.db.dao.P2PSyncInfoDao;
+import org.chimple.flores.db.entity.HandShakingMessage;
 import org.chimple.flores.db.entity.P2PSyncInfo;
 import org.chimple.flores.multicast.MulticastManager;
 import org.junit.After;
@@ -110,7 +111,76 @@ public class ExampleInstrumentedTest {
         for (int i = 0; i < 5; i++) {
             int s = i + 1;
             setUpTestData("A", s);
-            manager.getAllSyncInfosReceived().add("A-device"+"_"+"A"+"_"+s);
+            manager.getAllSyncInfosReceived().add("A-device" + "_" + "A" + "_" + s);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            int s = i + 1;
+            if (s <= 3) {
+                setUpTestData("B", s);
+                manager.getAllSyncInfosReceived().add("B-device" + "_" + "B" + "_" + s);
+            }
+
+            if (s > 3 && s <= 6) {
+                setUpMissingTestData("B", s);
+            }
+
+            if (s > 6 && s <= 10) {
+                setUpTestData("B", s);
+                manager.getAllSyncInfosReceived().add("B-device" + "_" + "B" + "_" + s);
+            }
+
+            if (s <= 2) {
+                setUpMissingTestData("C", s);
+            }
+            if (s > 2 && s <= 4) {
+                setUpTestData("C", s);
+                manager.getAllSyncInfosReceived().add("C-device" + "_" + "C" + "_" + s);
+            }
+
+            if (s > 4 && s <= 7) {
+                setUpMissingTestData("C", s);
+            }
+
+
+            if (s > 7 && s <= 8) {
+                setUpTestData("C", s);
+                manager.getAllSyncInfosReceived().add("C-device" + "_" + "C" + "_" + s);
+            }
+        }
+
+    }
+
+    private void seedInitialDataForE() {
+        for (int i = 0; i < 10; i++) {
+            setUpTestData("E", i + 1);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            int s = i + 1;
+            if (s <= 3) {
+                setUpTestData("A", s);
+                manager.getAllSyncInfosReceived().add("A-device" + "_" + "A" + "_" + s);
+            }
+
+            if (s > 3 && s <= 6) {
+                setUpMissingTestData("A", s);
+            }
+
+            if (s > 6 && s <= 10) {
+                setUpTestData("A", s);
+                manager.getAllSyncInfosReceived().add("A-device" + "_" + "A" + "_" + s);
+            }
+
+            if (s <= 6) {
+                setUpMissingTestData("B", s);
+            }
+
+            if (s > 6 && s <= 10) {
+                setUpTestData("B", s);
+                manager.getAllSyncInfosReceived().add("B-device" + "_" + "B" + "_" + s);
+            }
+
         }
 
     }
@@ -133,6 +203,16 @@ public class ExampleInstrumentedTest {
         p2pDBAPI.addMessage(userId1, deviceId, sequence, recepientUserId, messageType, message);
     }
 
+
+    private void setUpMissingTestData(String user, long sequence) {
+        String userId1 = user;
+        String deviceId = user + "-device";
+        String recepientUserId = "recepientUserId";
+        String message = generateMessage(user);
+        String messageType = "Missing";
+        p2pDBAPI.addMessage(userId1, deviceId, sequence, recepientUserId, messageType, message);
+    }
+
     private String generateMessage(String from) {
         byte[] array = new byte[7]; // length is bounded by 7
         new Random().nextBytes(array);
@@ -145,6 +225,7 @@ public class ExampleInstrumentedTest {
         p2pDBAPI.deleteDataPerDeviceId("B-device");
         p2pDBAPI.deleteDataPerDeviceId("C-device");
         p2pDBAPI.deleteDataPerDeviceId("D-device");
+        p2pDBAPI.deleteDataPerDeviceId("E-device");
     }
 
     private void updateInfos(String userId, String deviceId) {
@@ -154,6 +235,76 @@ public class ExampleInstrumentedTest {
         editor.putString("DEVICE_ID", deviceId);
         editor.commit(); // commit changes
     }
+
+    @Test
+    public void testNewHandShakingMessageLogic() {
+        cleanData();
+        updateInfos("E", "E-device");
+        seedInitialDataForE();
+        String serializedHandShakingMessage = p2pDBAPI.serializeHandShakingMessage(false);
+        assertEquals(serializedHandShakingMessage, "{\"from\":\"E-device\",\"infos\":[{\"deviceId\":\"A-device\",\"missingMessages\":\"4,5,6\",\"sequence\":10,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"missingMessages\":\"1,2,3,4,5,6\",\"sequence\":10,\"userId\":\"B\"},{\"deviceId\":\"E-device\",\"missingMessages\":\"\",\"sequence\":10,\"userId\":\"E\"}],\"message_type\":\"handshaking\",\"reply\":\"false\"}");
+        String handShakeMessageJSON = "{\"from\":\"E-device\",\"infos\":[{\"deviceId\":\"A-device\",\"missingMessages\":\"4,5,6\",\"sequence\":10,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"missingMessages\":\"1,2,3,4,5,6\",\"sequence\":10,\"userId\":\"B\"},{\"deviceId\":\"E-device\",\"missingMessages\":\"\",\"sequence\":10,\"userId\":\"E\"}],\"message_type\":\"handshaking\",\"reply\":\"false\"}";
+        HandShakingMessage m = p2pDBAPI.deSerializeHandShakingInformationFromJson(handShakeMessageJSON);
+        cleanData();
+        List<P2PSyncInfo> p2PSyncInfos = p2pDBAPI.getInfoByUserId("E");
+        assertEquals(p2PSyncInfos.size(), 0);
+    }
+
+    @Test
+    public void testSyncNewLogic() {
+        cleanData();
+        updateInfos("D", "D-device");
+        seedInitialDataForD();
+        String serializedHandShakingMessage = p2pDBAPI.serializeHandShakingMessage(false);
+        Log.d(TAG, serializedHandShakingMessage);
+        String handShakingFromA = "{\"from\":\"A-device\",\"infos\":[{\"deviceId\":\"A-device\",\"sequence\":10,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"missingMessages\":\"3,4\",\"sequence\":5,\"userId\":\"B\"},{\"deviceId\":\"C-device\",\"missingMessages\":\"3\",\"sequence\":10,\"userId\":\"C\"}],\"message_type\":\"handshaking\"}";
+        String handShakingFromB = "{\"from\":\"B-device\",\"infos\":[{\"deviceId\":\"A-device\",\"missingMessages\":\"3,4\",\"sequence\":8,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"sequence\":10,\"userId\":\"B\"},{\"deviceId\":\"C-device\",\"missingMessages\":\"3,5\", \"sequence\":10,\"userId\":\"C\"}],\"message_type\":\"handshaking\"}";
+//        String handShakingFromC = "{\"from\":\"C-device\",\"infos\":[{\"deviceId\":\"B-device\",\"sequence\":3,\"userId\":\"B\"},{\"deviceId\":\"C-device\",\"sequence\":10,\"userId\":\"C\"}],\"message_type\":\"handshaking\"}";
+//        manager.parseHandShakingMessage(handShakingFromC);
+        manager.parseHandShakingMessage(handShakingFromA);
+        manager.parseHandShakingMessage(handShakingFromB);
+        List<String> jsons = manager.generateSyncInfoPullRequest(manager.getAllHandShakeMessagesInCurrentLoop());
+
+
+        List<String> requests = new ArrayList<String>();
+        for (String json : jsons) {
+            if (json.contains("\"md\":\"B-device\"")) {
+                cleanData();
+                seedInitialDataForB();
+                updateInfos("B", "B-device");
+            } else if (json.contains("\"md\":\"A-device\"")) {
+                cleanData();
+                seedInitialDataForA();
+                updateInfos("A", "A-device");
+            }
+            requests.addAll(manager.processInComingSyncRequestMessage(json));
+            cleanData();
+        }
+
+        updateInfos("D", "D-device");
+        seedInitialDataForD();
+        List<P2PSyncInfo> a = p2pDBAPI.getSyncInformationByUserIdAndDeviceId("A", "A-device");
+        List<P2PSyncInfo> d = p2pDBAPI.getSyncInformationByUserIdAndDeviceId("D", "D-device");
+
+        for (String s : requests) {
+            manager.processInComingSyncInfoMessage(s, "");
+        }
+
+
+        List<P2PSyncInfo> a1 = p2pDBAPI.getSyncInformationByUserIdAndDeviceId("A", "A-device");
+        List<P2PSyncInfo> b1 = p2pDBAPI.getSyncInformationByUserIdAndDeviceId("B", "B-device");
+        List<P2PSyncInfo> d1 = p2pDBAPI.getSyncInformationByUserIdAndDeviceId("D", "D-device");
+//        assertEquals(computedMessages.size(), 12);
+//        Iterator<String> it = computedMessages.iterator();
+//        while (it.hasNext()) {
+//            String p = it.next();
+//            Log.d(TAG, p);
+//        }
+        cleanData();
+        List<P2PSyncInfo> p2PSyncInfos = p2pDBAPI.getInfoByUserId("D");
+        assertEquals(p2PSyncInfos.size(), 0);
+    }
+
 
     @Test
     public void testNewLogic() {
@@ -177,8 +328,7 @@ public class ExampleInstrumentedTest {
                 cleanData();
                 seedInitialDataForB();
                 updateInfos("B", "B-device");
-            }
-            else if (json.contains("\"md\":\"A-device\"")) {
+            } else if (json.contains("\"md\":\"A-device\"")) {
                 cleanData();
                 seedInitialDataForA();
                 updateInfos("A", "A-device");
@@ -192,7 +342,7 @@ public class ExampleInstrumentedTest {
         List<P2PSyncInfo> a = p2pDBAPI.getSyncInformationByUserIdAndDeviceId("A", "A-device");
         List<P2PSyncInfo> d = p2pDBAPI.getSyncInformationByUserIdAndDeviceId("D", "D-device");
 
-        for (String s: requests) {
+        for (String s : requests) {
             manager.processInComingSyncInfoMessage(s, "");
         }
 

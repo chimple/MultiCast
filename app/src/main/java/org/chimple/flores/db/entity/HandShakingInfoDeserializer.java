@@ -33,7 +33,14 @@ public class HandShakingInfoDeserializer implements JsonDeserializer<HandShaking
             sequence = jsonSequence.getAsLong();
         }
 
-        final HandShakingInfo handShakingInfo = new HandShakingInfo(userId, deviceId, sequence);
+        String missingMessages = null;
+        final JsonElement jsonMissingMessages = jsonObject.get("missingMessages");
+        if(jsonMissingMessages != null) {
+            missingMessages = jsonMissingMessages.getAsString();
+        }
+
+
+        final HandShakingInfo handShakingInfo = new HandShakingInfo(userId, deviceId, sequence, missingMessages);
         return handShakingInfo;
     }
 }

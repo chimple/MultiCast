@@ -9,7 +9,7 @@ import java.util.List;
 import org.chimple.flores.db.entity.P2PSyncInfo;
 import org.chimple.flores.db.entity.P2PUserIdDeviceIdAndMessage;
 import org.chimple.flores.db.entity.P2PUserIdMessage;
-
+import org.chimple.flores.multicast.MulticastManager;
 import static org.chimple.flores.application.P2PContext.SHARED_PREF;
 
 public class DBSyncManager {
@@ -21,6 +21,7 @@ public class DBSyncManager {
     public enum MessageTypes {
         PHOTO("Photo"),
         CHAT("Chat"),
+        MISSING("missing"),
         GAME("Game");
 
         private String type;
@@ -106,9 +107,11 @@ public class DBSyncManager {
     public boolean loggedInUser(String userId, String deviceId) {
         SharedPreferences pref = this.context.getSharedPreferences(SHARED_PREF, 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
+        Log.d(TAG, "loggedInUser userId: ---->" + userId);
+        Log.d(TAG, "loggedInUser deviceId: ---->" + deviceId);
         editor.putString("USER_ID", userId);
         editor.putString("DEVICE_ID", deviceId);
-        editor.commit();
+        editor.commit();        
         return true;
     }
 }

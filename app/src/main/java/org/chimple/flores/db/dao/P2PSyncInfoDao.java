@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import org.chimple.flores.db.DBSyncManager;
 import org.chimple.flores.db.entity.P2PLatestInfoByUserAndDevice;
 import org.chimple.flores.db.entity.P2PSyncInfo;
 import org.chimple.flores.db.entity.P2PUserIdDeviceIdAndMessage;
@@ -37,7 +38,10 @@ public interface P2PSyncInfoDao {
     public Long getLatestStepForUserIdAndSessionId(String userId, String sessionId);
 
 
-    @Query("SELECT user_id, device_id, MAX(sequence) as sequence FROM P2PSyncInfo where user_id is not null and device_id is not null GROUP BY user_id, device_id")
+    @Query("SELECT user_id, device_id, sequence as sequence FROM P2PSyncInfo where user_id=:userId AND device_id=:deviceId and message_type = 'missing'")
+    public P2PLatestInfoByUserAndDevice[] getMissingMessagesByUserIdAndDeviceId(String userId, String deviceId);
+
+    @Query("SELECT user_id, device_id, MAX(sequence) as sequence FROM P2PSyncInfo where user_id is not null and device_id is not null and message is not null GROUP BY user_id, device_id")
     public P2PLatestInfoByUserAndDevice[] getLatestInfoAvailableByUserIdAndDeviceId();
 
 
@@ -49,8 +53,15 @@ public interface P2PSyncInfoDao {
     public P2PSyncInfo[] fetchByUserAndDeviceUpToSequence(String userId, String deviceId, Long sequence);
 
     @Query("SELECT * FROM P2PSyncInfo WHERE user_id=:userId AND device_id=:deviceId AND sequence = :sequence")
-    public List<P2PSyncInfo> fetchByUserAndDeviceAndSequence(String userId, String deviceId, Long sequence);
+    public P2PSyncInfo fetchByUserAndDeviceAndSequence(String userId, String deviceId, Long sequence);
 
+
+    @Query("SELECT id FROM P2PSyncInfo WHERE user_id = :userId AND device_id = :deviceId AND sequence = :sequence")
+    public Long findId(String userId, String deviceId, Long sequence);
+
+
+    @Query("SELECT max(sequence) FROM P2PSyncInfo WHERE user_id=:userId AND device_id=:deviceId and sequence < :sequence and message_type != 'missing' and message is not null GROUP BY user_id, device_id")
+    public Long fetchMinValidSequenceByUserAndDevice(String userId, String deviceId, Long sequence);
 
     @Query("DELETE FROM P2PSyncInfo WHERE device_id = :deviceId")
     public void deletePerDeviceID(String deviceId);

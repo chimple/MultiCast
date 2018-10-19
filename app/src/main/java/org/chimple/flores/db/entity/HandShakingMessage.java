@@ -1,10 +1,6 @@
 package org.chimple.flores.db.entity;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import org.chimple.flores.application.P2PApplication;
-
 import java.util.List;
 
 public class HandShakingMessage {
