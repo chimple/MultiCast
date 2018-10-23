@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 public class DatabaseInitializer {
 
@@ -46,7 +47,7 @@ public class DatabaseInitializer {
                 String message = columns[0];
                 String messageType = columns[1];
 
-                P2PDBApiImpl.getInstance(context).persistMessage(P2PContext.getLoggedInUser(), P2PContext.getCurrentDevice(), "", message, messageType);
+                P2PDBApiImpl.getInstance(context).persistMessage(P2PContext.getLoggedInUser(), P2PContext.getCurrentDevice(), "", message, messageType, new Date());
             }
 
             P2PDBApiImpl.getInstance(context).upsertProfile();

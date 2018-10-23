@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -231,31 +234,42 @@ public class MulticastManager {
             synchronized (MulticastManager.class) {
                 boolean isConnected = intent.getBooleanExtra("isConnected", false);
                 if (!isConnected) {
-                    instance.stopMulticastTimer = new CountDownTimer(STOP_MULTICAST_TIMER, 1000) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
-                        public void onTick(long millisUntilFinished) {
+                        public void run() {
+                            instance.stopMulticastTimer = new CountDownTimer(STOP_MULTICAST_TIMER, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    notifyUI("stopping multicast operations", " ------> ", LOG_TYPE);
+                                    instance.stopMultiCastOperations();
+                                }
+                            }.start();
 
                         }
-
-                        @Override
-                        public void onFinish() {
-                            notifyUI("stopping multicast operations", " ------> ", LOG_TYPE);
-                            instance.stopMultiCastOperations();
-                        }
-                    }.start();
+                    });
                 } else {
-                    instance.startMulticastTimer = new CountDownTimer(START_MULTICAST_TIMER, 1000) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
-                        public void onTick(long millisUntilFinished) {
+                        public void run() {
+                            instance.startMulticastTimer = new CountDownTimer(START_MULTICAST_TIMER, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
 
-                        }
+                                }
 
-                        @Override
-                        public void onFinish() {
-                            notifyUI("starting multicast operations", " ------> ", LOG_TYPE);
-                            instance.startMultiCastOperations();
+                                @Override
+                                public void onFinish() {
+                                    notifyUI("starting multicast operations", " ------> ", LOG_TYPE);
+                                    instance.startMultiCastOperations();
+                                }
+                            }.start();
                         }
-                    }.start();
+                    });
                 }
             }
         }
@@ -269,18 +283,24 @@ public class MulticastManager {
     private BroadcastReceiver refreshDeviceReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             synchronized (MulticastManager.class) {
-                notifyUI("Clear ALL...", " ------> ", CLEAR_CONSOLE_TYPE);
-                List<P2PSyncInfo> allInfos = p2PDBApiImpl.refreshAllMessages();
-                if (allInfos != null) {
-                    Iterator<P2PSyncInfo> allInfosIt = allInfos.iterator();
-                    while (allInfosIt.hasNext()) {
-                        P2PSyncInfo p = allInfosIt.next();
-                        instance.getAllSyncInfosReceived().add(p.getDeviceId() + "_" + p.getUserId() + "_" + Long.valueOf(p.getSequence().longValue()));
-                        String sender = p.getSender().equals(P2PContext.getCurrentDevice()) ? "You" : p.getSender();
-                        //notifyUI(p.message, sender, CONSOLE_TYPE);
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyUI("Clear ALL...", " ------> ", CLEAR_CONSOLE_TYPE);
+                        List<P2PSyncInfo> allInfos = p2PDBApiImpl.refreshAllMessages();
+                        if (allInfos != null) {
+                            Iterator<P2PSyncInfo> allInfosIt = allInfos.iterator();
+                            while (allInfosIt.hasNext()) {
+                                P2PSyncInfo p = allInfosIt.next();
+                                instance.getAllSyncInfosReceived().add(p.getDeviceId() + "_" + p.getUserId() + "_" + Long.valueOf(p.getSequence().longValue()));
+                                String sender = p.getSender().equals(P2PContext.getCurrentDevice()) ? "You" : p.getSender();
+                                //notifyUI(p.message, sender, CONSOLE_TYPE);
+                            }
+                        }
+                        Log.d(TAG, "rebuild sync info received cache and updated UI");
                     }
-                }
-                Log.d(TAG, "rebuild sync info received cache and updated UI");
+
+                });
             }
         }
     };
@@ -353,14 +373,20 @@ public class MulticastManager {
     }
 
     public void processInComingMessage(String message, String fromIP) {
-        if (instance.isHandShakingMessage(message)) {
-            instance.processInComingHandShakingMessage(message);
-        } else if (instance.isSyncRequestMessage(message)) {
-            List<String> syncInfoMessages = instance.processInComingSyncRequestMessage(message);
-            instance.sendMessages(syncInfoMessages);
-        } else if (instance.isSyncInfoMessage(message)) {
-            instance.processInComingSyncInfoMessage(message, fromIP);
-        }
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (instance.isHandShakingMessage(message)) {
+                    instance.processInComingHandShakingMessage(message);
+                } else if (instance.isSyncRequestMessage(message)) {
+                    List<String> syncInfoMessages = instance.processInComingSyncRequestMessage(message);
+                    instance.sendMessages(syncInfoMessages);
+                } else if (instance.isSyncInfoMessage(message)) {
+                    instance.processInComingSyncInfoMessage(message, fromIP);
+                }
+            }
+        });
+
     }
 
 
@@ -386,20 +412,26 @@ public class MulticastManager {
         synchronized (MulticastManager.class) {
             if (waitForHandShakingMessagesTimer == null) {
                 Log.d(TAG, "waitForHandShakingMessagesTimer => created to process Incoming handshaking requests");
-                waitForHandShakingMessagesTimer = new CountDownTimer(WAIT_FOR_HAND_SHAKING_MESSAGES, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                    }
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        waitForHandShakingMessagesTimer = new CountDownTimer(WAIT_FOR_HAND_SHAKING_MESSAGES, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                            }
 
-                    public void onFinish() {
-                        Log.d(TAG, "waitForHandShakingMessagesTimer finished ... processing sync information ...");
-                        instance.generateSyncInfoPullRequest(instance.getAllHandShakeMessagesInCurrentLoop());
-                        if (waitForHandShakingMessagesTimer != null) {
-                            waitForHandShakingMessagesTimer.cancel();
-                            Log.d(TAG, "waitForHandShakingMessagesTimer => reset to cancelled");
-                            waitForHandShakingMessagesTimer = null;
-                        }
+                            public void onFinish() {
+                                Log.d(TAG, "waitForHandShakingMessagesTimer finished ... processing sync information ...");
+                                instance.generateSyncInfoPullRequest(instance.getAllHandShakeMessagesInCurrentLoop());
+                                if (waitForHandShakingMessagesTimer != null) {
+                                    waitForHandShakingMessagesTimer.cancel();
+                                    Log.d(TAG, "waitForHandShakingMessagesTimer => reset to cancelled");
+                                    waitForHandShakingMessagesTimer = null;
+                                }
+                            }
+                        }.start();
                     }
-                }.start();
+                });
+
             } else {
                 Log.d(TAG, "waitForHandShakingMessagesTimer => already started ...");
             }
@@ -448,33 +480,39 @@ public class MulticastManager {
     }
 
     public void processInComingSyncInfoMessage(String message, String fromIP) {
-        Log.d(TAG, "processInComingSyncInfoMessage -> " + message + " fromIP -> " + fromIP);
-        Iterator<P2PSyncInfo> infos = p2PDBApiImpl.deSerializeP2PSyncInfoFromJson(message).iterator();
-        while (infos.hasNext()) {
-            P2PSyncInfo info = infos.next();
-            MessageStatus status = new MessageStatus(false, false);
-            status = instance.validIncomingSyncMessage(info, status);
-            if (status.isDuplicateMessage()) {
-                notifyUI(info.message + " ---------> duplicate - rejected ", info.getSender(), LOG_TYPE);
-                infos.remove();
-            } else if (status.isOutOfSyncMessage()) {
-                notifyUI(info.message + " with sequence " + info.getSequence() + " ---------> out of sync processed with filling Missing type message ", info.getSender(), LOG_TYPE);
-                String key = info.getDeviceId() + "_" + info.getUserId() + "_" + Long.valueOf(info.getSequence().longValue());
-                Log.d(TAG, "processing out of sync data message for key:" + key + " and message:" + info.message);
-                String rMessage = p2PDBApiImpl.persistOutOfSyncP2PSyncMessage(info);
-                // generate handshaking request
-                if (status.isOutOfSyncMessage()) {
-                    Log.d(TAG, "validIncomingSyncMessage -> out of order -> sendInitialHandShakingMessage");
-                    sendInitialHandShakingMessage(true);
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "processInComingSyncInfoMessage -> " + message + " fromIP -> " + fromIP);
+                Iterator<P2PSyncInfo> infos = p2PDBApiImpl.deSerializeP2PSyncInfoFromJson(message).iterator();
+                while (infos.hasNext()) {
+                    P2PSyncInfo info = infos.next();
+                    MessageStatus status = new MessageStatus(false, false);
+                    status = instance.validIncomingSyncMessage(info, status);
+                    if (status.isDuplicateMessage()) {
+                        notifyUI(info.message + " ---------> duplicate - rejected ", info.getSender(), LOG_TYPE);
+                        infos.remove();
+                    } else if (status.isOutOfSyncMessage()) {
+                        notifyUI(info.message + " with sequence " + info.getSequence() + " ---------> out of sync processed with filling Missing type message ", info.getSender(), LOG_TYPE);
+                        String key = info.getDeviceId() + "_" + info.getUserId() + "_" + Long.valueOf(info.getSequence().longValue());
+                        Log.d(TAG, "processing out of sync data message for key:" + key + " and message:" + info.message);
+                        String rMessage = p2PDBApiImpl.persistOutOfSyncP2PSyncMessage(info);
+                        // generate handshaking request
+                        if (status.isOutOfSyncMessage()) {
+                            Log.d(TAG, "validIncomingSyncMessage -> out of order -> sendInitialHandShakingMessage");
+                            sendInitialHandShakingMessage(true);
+                        }
+                    } else if (!status.isOutOfSyncMessage() && !status.isDuplicateMessage()) {
+                        String key = info.getDeviceId() + "_" + info.getUserId() + "_" + Long.valueOf(info.getSequence().longValue());
+                        Log.d(TAG, "processing sync data message for key:" + key + " and message:" + info.message);
+                        String rMessage = p2PDBApiImpl.persistP2PSyncInfo(info);
+                    } else {
+                        infos.remove();
+                    }
                 }
-            } else if (!status.isOutOfSyncMessage() && !status.isDuplicateMessage()) {
-                String key = info.getDeviceId() + "_" + info.getUserId() + "_" + Long.valueOf(info.getSequence().longValue());
-                Log.d(TAG, "processing sync data message for key:" + key + " and message:" + info.message);
-                String rMessage = p2PDBApiImpl.persistP2PSyncInfo(info);
-            } else {
-                infos.remove();
             }
-        }
+        });
+
     }
 
     public List<String> processInComingSyncRequestMessage(String message) {

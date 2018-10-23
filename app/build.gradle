@@ -20,6 +20,10 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.1'
+    }
 }
 
 dependencies {
@@ -28,6 +32,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'commons-beanutils:commons-beanutils:1.8.3'
     implementation 'org.apache.commons:commons-collections4:4.1'
+    implementation 'com.google.guava:guava:26.0-android'
     implementation 'commons-codec:commons-codec:1.9'
     implementation 'commons-io:commons-io:2.6'
     implementation 'com.google.code.gson:gson:2.8.0'

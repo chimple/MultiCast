@@ -2,6 +2,7 @@ package org.chimple.flores.multicast;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -13,7 +14,7 @@ public class MulticastSenderThread extends MulticastThread {
     private String messageToSend;
 
     public MulticastSenderThread(Context context, String multicastIP, int multicastPort, String messageToSend) {
-        super("MulticastSenderThread", context, multicastIP, multicastPort, new Handler());
+        super("MulticastSenderThread", context, multicastIP, multicastPort, new Handler(Looper.getMainLooper()));
         this.messageToSend = messageToSend;
     }
 

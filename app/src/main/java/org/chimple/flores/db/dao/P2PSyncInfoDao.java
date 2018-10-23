@@ -89,7 +89,7 @@ public interface P2PSyncInfoDao {
     public List<P2PUserIdMessage> fetchLatestMessagesByMessageType(String messageType);
 
 
-    @Query("SELECT * FROM (SELECT * FROM P2PSyncInfo WHERE message_type = :messageType AND ((user_id = :userId and recipient_user_id = :recipientId) or (user_id = :recipientId and recipient_user_id = :userId)) order by logged_at desc limit 100) order by logged_at")
+    @Query("SELECT * FROM (SELECT * FROM P2PSyncInfo WHERE message_type = :messageType AND ((user_id = :userId and recipient_user_id = :recipientId) or (user_id = :recipientId and recipient_user_id = :userId)) order by sequence asc limit 100) order by sequence asc")
     public List<P2PSyncInfo> fetchConversations(String userId, String recipientId, String messageType);
 
     @Query("SELECT p2p.* from (SELECT session_id, max(step) as step from P2PSyncInfo where message_type = :messageType group by session_id) tmp, P2PSyncInfo p2p where p2p.session_id = tmp.session_id and p2p.step = tmp.step and p2p.status = 1 and ((p2p.user_id = :userId and p2p.recipient_user_id = :recipientId) or (p2p.user_id = :recipientId and p2p.recipient_user_id = :userId))")

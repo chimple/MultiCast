@@ -3,6 +3,7 @@ package org.chimple.flores.multicast;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -15,7 +16,7 @@ public class MulticastListenerThread extends MulticastThread {
     private static final String TAG = MulticastListenerThread.class.getSimpleName();
 
     MulticastListenerThread(Context context, String multicastIP, int multicastPort) {
-        super(TAG, context, multicastIP, multicastPort, new Handler());
+        super(TAG, context, multicastIP, multicastPort, new Handler(Looper.getMainLooper()));
     }
 
 
@@ -38,12 +39,10 @@ public class MulticastListenerThread extends MulticastThread {
                 ignored.printStackTrace();
                 continue;
             }
-
             String data = new String(packet.getData()).trim();
-
             boolean isLoopBackMessage = getLocalIP().equals(packet.getAddress().getHostAddress()) ? true : false;
-            final String consoleMessage = data;
-            this.broadcastIncomingMessage(consoleMessage, packet.getAddress().getHostAddress(), isLoopBackMessage);
+            this.broadcastIncomingMessage(data, packet.getAddress().getHostAddress(), isLoopBackMessage);
+            data = null;
         }
     }
 

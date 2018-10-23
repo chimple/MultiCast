@@ -3,6 +3,7 @@ package org.chimple.flores.db;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -22,7 +23,13 @@ import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.collections4.TransformerUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -88,17 +95,41 @@ public class P2PDBApiImpl {
         this.manager = manager;
     }
 
-    public void persistMessage(String userId, String deviceId, String recepientUserId, String message, String messageType) {
+    public void persistMessage(String userId, String deviceId, String recepientUserId, String message, String messageType, Date createDate) {
         Long maxSequence = db.p2pSyncDao().getLatestSequenceAvailableByUserIdAndDeviceId(userId, deviceId);
         if (maxSequence == null) {
             maxSequence = 0L;
         }
 
         maxSequence++;
-        P2PSyncInfo info = new P2PSyncInfo(userId, deviceId, maxSequence, recepientUserId, message, messageType);
+        P2PSyncInfo info = new P2PSyncInfo(userId, deviceId, maxSequence, recepientUserId, message, messageType, createDate);
         this.persistP2PSyncMessage(info);
         Log.i(TAG, "inserted data" + info);
     }
+
+    public void appendLog(String text) {
+        String path = Environment.getExternalStorageDirectory().getPath() + "/" + "log.file";
+        File logFile = new File(path);
+        if (!logFile.exists()) {
+            try {
+                logFile.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        try {
+            //BufferedWriter for performance, true to set append to file flag
+            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+            buf.append(text);
+            buf.newLine();
+            buf.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 
     public String persistP2PSyncMessage(P2PSyncInfo message) {
         Log.i(TAG, "got Sync userId:" + message.userId);
@@ -106,7 +137,7 @@ public class P2PDBApiImpl {
         Log.i(TAG, "got Sync sequence:" + message.sequence);
         Log.i(TAG, "got Sync message:" + message.message);
         P2PSyncInfo found = db.p2pSyncDao().fetchByUserAndDeviceAndSequence(message.getUserId(), message.getDeviceId(), message.sequence);
-        if(found != null) {
+        if (found != null) {
             message.id = found.id;
         }
         db.p2pSyncDao().insertP2PSyncInfo(message);
@@ -119,6 +150,7 @@ public class P2PDBApiImpl {
         try {
             if ((userId != null && message.recipientUserId != null && userId.equals(message.getRecipientUserId())) || message.messageType.equals("Photo")) {
                 Log.i(TAG, "messageReceived intent constructing for user" + userId);
+                this.appendLog("messageReceived intent constructing for user" + userId + " and type:" + message.messageType + " with content:" + message.message);
                 //FloresPlugin.onMessageReceived(message);
                 //LocalBroadcastManager.getInstance(this.context).sendBroadcast(intent);
                 Log.i(TAG, "messageReceived intent sent successfully");
@@ -137,15 +169,17 @@ public class P2PDBApiImpl {
         Log.i(TAG, "got Sync sequence:" + message.sequence);
         Log.i(TAG, "got Sync message:" + message.message);
         Long lastValidSequence = db.p2pSyncDao().fetchMinValidSequenceByUserAndDevice(message.getUserId(), message.getDeviceId(), message.sequence);
-        Log.i(TAG, "in persistOutOfSyncP2PSyncMessage --> got last valid sequence:" + lastValidSequence.longValue());
-        for (int i = lastValidSequence.intValue() + 1; i < message.sequence; i++) {
-            P2PSyncInfo missingP2P = new P2PSyncInfo(message.userId, message.deviceId, new Long(i), message.recipientUserId, null, DBSyncManager.MessageTypes.MISSING.type());
-            Log.i(TAG, "inserted out of sync message" + missingP2P.toString());
-            Log.i(TAG, "in persistOutOfSyncP2PSyncMessage --> inserted out of sync message userId:" + message.userId + " deviceId:" + message.deviceId + "sequence:" + i + "messageType:" + DBSyncManager.MessageTypes.MISSING.type());
-            Long existingId = db.p2pSyncDao().findId(message.userId, message.deviceId, message.sequence);
-            missingP2P.id = existingId;
-            db.p2pSyncDao().insertP2PSyncInfo(missingP2P);
-            manager.notifyUI(message.message + "inserted ----> missing message with sequence:" + i, message.getSender(), LOG_TYPE);
+        if (lastValidSequence != null) {
+            for (int i = lastValidSequence.intValue() + 1; i < message.sequence; i++) {
+                Log.i(TAG, "in persistOutOfSyncP2PSyncMessage --> got last valid sequence:" + lastValidSequence.longValue());
+                P2PSyncInfo missingP2P = new P2PSyncInfo(message.userId, message.deviceId, new Long(i), message.recipientUserId, null, DBSyncManager.MessageTypes.MISSING.type(), message.getCreatedAt());
+                Log.i(TAG, "inserted out of sync message" + missingP2P.toString());
+                Log.i(TAG, "in persistOutOfSyncP2PSyncMessage --> inserted out of sync message userId:" + message.userId + " deviceId:" + message.deviceId + "sequence:" + i + "messageType:" + DBSyncManager.MessageTypes.MISSING.type());
+                Long existingId = db.p2pSyncDao().findId(message.userId, message.deviceId, message.sequence);
+                missingP2P.id = existingId;
+                db.p2pSyncDao().insertP2PSyncInfo(missingP2P);
+                manager.notifyUI(message.message + "inserted ----> missing message with sequence:" + i, message.getSender(), LOG_TYPE);
+            }
         }
 
         P2PSyncInfo found = db.p2pSyncDao().fetchByUserAndDeviceAndSequence(message.getUserId(), message.getDeviceId(), message.sequence);
@@ -159,7 +193,7 @@ public class P2PDBApiImpl {
             try {
                 if ((userId != null && message.recipientUserId != null && userId.equals(message.getRecipientUserId())) || message.messageType.equals("Photo")) {
                     Log.i(TAG, "messageReceived intent constructing for user" + userId);
-                    //FloresPlugin.onMessageReceived(message);
+//                    FloresPlugin.onMessageReceived(message);
                     //LocalBroadcastManager.getInstance(this.context).sendBroadcast(intent);
                     Log.i(TAG, "messageReceived intent sent successfully");
                 }
@@ -350,7 +384,7 @@ public class P2PDBApiImpl {
                 String tUserId = info.getUserId();
                 P2PLatestInfoByUserAndDevice[] missingRecords = db.p2pSyncDao().getMissingMessagesByUserIdAndDeviceId(tUserId, tDeviceId);
                 List<P2PLatestInfoByUserAndDevice> missingRecordsList = Arrays.asList(missingRecords);
-                Collection<Long> missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
+                Collection missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
                 String missingRecordsStr = StringUtils.join(missingSequences, ",");
                 if (info.userId != null && info.deviceId != null) {
                     HandShakingInfo i = new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr);
@@ -371,11 +405,6 @@ public class P2PDBApiImpl {
 
     public String serializeHandShakingMessage(boolean needAcknowlegement) {
         try {
-            P2PSyncInfo[] all = db.p2pSyncDao().refreshAllMessages();
-            for (P2PSyncInfo a : all) {
-                Log.d(TAG, "Print message for user id:" + a.userId + " deviceId:" + a.deviceId + " message:" + a.message + " messageType:" + a.messageType + " sequence:" + a.sequence);
-            }
-
             List<HandShakingInfo> handShakingInfos = new ArrayList<HandShakingInfo>();
             P2PLatestInfoByUserAndDevice[] infos = db.p2pSyncDao().getLatestInfoAvailableByUserIdAndDeviceId();
             for (P2PLatestInfoByUserAndDevice info : infos) {
@@ -384,7 +413,7 @@ public class P2PDBApiImpl {
                     P2PLatestInfoByUserAndDevice[] missingRecords = db.p2pSyncDao().getMissingMessagesByUserIdAndDeviceId(info.userId, info.deviceId);
                     Log.d(TAG, "missingRecords:" + missingRecords.length);
                     List<P2PLatestInfoByUserAndDevice> missingRecordsList = Arrays.asList(missingRecords);
-                    Collection<Long> missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
+                    Collection missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
                     String missingRecordsStr = StringUtils.join(missingSequences, ",");
                     Log.d(TAG, "missingRecordsStr:" + missingRecordsStr);
                     handShakingInfos.add(new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr));
@@ -489,7 +518,7 @@ public class P2PDBApiImpl {
             if (info.userId != null && info.deviceId != null) {
                 P2PLatestInfoByUserAndDevice[] missingRecords = db.p2pSyncDao().getMissingMessagesByUserIdAndDeviceId(info.userId, info.deviceId);
                 List<P2PLatestInfoByUserAndDevice> missingRecordsList = Arrays.asList(missingRecords);
-                Collection<Long> missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
+                Collection missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
                 String missingRecordsStr = StringUtils.join(missingSequences, ",");
                 handShakingInfos.add(new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr));
             }
@@ -522,6 +551,7 @@ public class P2PDBApiImpl {
 
     private Gson registerP2PSyncInfoBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setDateFormat("yyyy-MM-dd HH:mm:ss");
         gsonBuilder.registerTypeAdapter(P2PSyncInfo.class, new P2PSyncInfoDeserializer());
         gsonBuilder.registerTypeAdapter(SyncInfoMessage.class, new SyncInfoMessageDeserializer());
         Gson gson = gsonBuilder.create();
@@ -768,7 +798,7 @@ public class P2PDBApiImpl {
             }
 
             maxSequence++;
-            P2PSyncInfo info = new P2PSyncInfo(userId, deviceId, maxSequence, recipientId, message, messageType);
+            P2PSyncInfo info = new P2PSyncInfo(userId, deviceId, maxSequence, recipientId, message, messageType, new Date());
             db.p2pSyncDao().insertP2PSyncInfo(info);
             Log.i(TAG, "inserted data" + info);
             broadcastNewMessageAdded(info);
@@ -793,7 +823,7 @@ public class P2PDBApiImpl {
     // for testing only
     public boolean addMessage(String userId, String deviceId, Long sequence, String recipientId, String messageType, String message) {
         try {
-            P2PSyncInfo info = new P2PSyncInfo(userId, deviceId, sequence, recipientId, message, messageType);
+            P2PSyncInfo info = new P2PSyncInfo(userId, deviceId, sequence, recipientId, message, messageType, new Date());
             db.p2pSyncDao().insertP2PSyncInfo(info);
             Log.i(TAG, "inserted data" + info);
             broadcastNewMessageAdded(info);
@@ -830,7 +860,7 @@ public class P2PDBApiImpl {
 
             step++;
 
-            P2PSyncInfo info = new P2PSyncInfo(userId, deviceId, maxSequence, recipientId, message, messageType);
+            P2PSyncInfo info = new P2PSyncInfo(userId, deviceId, maxSequence, recipientId, message, messageType, new Date());
             info.setSessionId(sessionId);
             info.setStatus(status);
             info.setStep(step);
@@ -914,6 +944,8 @@ public class P2PDBApiImpl {
 
 class P2PSyncInfoDeserializer implements JsonDeserializer<P2PSyncInfo> {
 
+    private static final String TAG = P2PSyncInfoDeserializer.class.getSimpleName();
+
     public P2PSyncInfo deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
             throws JsonParseException {
 
@@ -962,8 +994,21 @@ class P2PSyncInfoDeserializer implements JsonDeserializer<P2PSyncInfo> {
             step = jsonStep.getAsLong();
         }
 
+        Date createdAt = null;
+        final JsonElement jsonCreatedAt = jsonObject.get("createdAt");
+        if (jsonCreatedAt != null) {
+            try {
+                String dateString = jsonCreatedAt.getAsString();
+                DateFormat readFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                createdAt = readFormat.parse(dateString);
+                Log.d(TAG, "created at from json:" + createdAt);
+            } catch (Exception e) {
+                createdAt = new Date();
+                e.printStackTrace();
+            }
+        }
 
-        final P2PSyncInfo p2PSyncInfo = new P2PSyncInfo(userId, deviceId, sequence, recipientUserId, receivedMessage, messageType);
+        final P2PSyncInfo p2PSyncInfo = new P2PSyncInfo(userId, deviceId, sequence, recipientUserId, receivedMessage, messageType, createdAt);
         p2PSyncInfo.setSessionId(sessionId);
         p2PSyncInfo.setStatus(status);
         p2PSyncInfo.setStep(step);
