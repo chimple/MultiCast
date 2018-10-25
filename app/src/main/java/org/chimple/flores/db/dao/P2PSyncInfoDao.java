@@ -17,7 +17,7 @@ import org.chimple.flores.db.entity.P2PUserIdMessage;
 @Dao
 public interface P2PSyncInfoDao {
 
-    @Query("SELECT * FROM P2PSyncInfo order by logged_at asc")
+    @Query("SELECT * FROM P2PSyncInfo where message_type != 'missing' order by logged_at asc")
     public P2PSyncInfo[] refreshAllMessages();
 
 
@@ -38,10 +38,10 @@ public interface P2PSyncInfoDao {
     public Long getLatestStepForUserIdAndSessionId(String userId, String sessionId);
 
 
-    @Query("SELECT user_id, device_id, sequence as sequence FROM P2PSyncInfo where user_id=:userId AND device_id=:deviceId and message_type = 'missing'")
+    @Query("SELECT user_id, device_id, sequence as sequence FROM P2PSyncInfo where user_id=:userId AND device_id=:deviceId and message_type = 'missing' order by sequence asc")
     public P2PLatestInfoByUserAndDevice[] getMissingMessagesByUserIdAndDeviceId(String userId, String deviceId);
 
-    @Query("SELECT user_id, device_id, MAX(sequence) as sequence FROM P2PSyncInfo where user_id is not null and device_id is not null and message is not null GROUP BY user_id, device_id")
+    @Query("SELECT user_id, device_id, MAX(sequence) as sequence FROM P2PSyncInfo where user_id is not null and device_id is not null and message is not null and message_type != 'missing' GROUP BY user_id, device_id")
     public P2PLatestInfoByUserAndDevice[] getLatestInfoAvailableByUserIdAndDeviceId();
 
 
@@ -65,6 +65,10 @@ public interface P2PSyncInfoDao {
 
     @Query("DELETE FROM P2PSyncInfo WHERE device_id = :deviceId")
     public void deletePerDeviceID(String deviceId);
+
+    @Query("DELETE FROM P2PSyncInfo WHERE user_id=:userId AND device_id=:deviceId and sequence = :sequence")
+    public void deleteMessage(String userId, String deviceId, Long sequence);
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public Long insertP2PSyncInfo(P2PSyncInfo info);

@@ -13,10 +13,15 @@ import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.chimple.flores.application.P2PContext;
 import org.chimple.flores.db.DBSyncManager;
@@ -50,6 +55,7 @@ import static org.chimple.flores.application.P2PContext.MULTICAST_IP_ADDRESS;
 import static org.chimple.flores.application.P2PContext.MULTICAST_IP_PORT;
 import static org.chimple.flores.application.P2PContext.NEW_MESSAGE_ADDED;
 import static org.chimple.flores.application.P2PContext.uiMessageEvent;
+import static org.chimple.flores.db.AppDatabase.SYNC_NUMBER_OF_LAST_MESSAGES;
 
 public class MulticastManager {
 
@@ -294,7 +300,7 @@ public class MulticastManager {
                                 P2PSyncInfo p = allInfosIt.next();
                                 instance.getAllSyncInfosReceived().add(p.getDeviceId() + "_" + p.getUserId() + "_" + Long.valueOf(p.getSequence().longValue()));
                                 String sender = p.getSender().equals(P2PContext.getCurrentDevice()) ? "You" : p.getSender();
-                                //notifyUI(p.message, sender, CONSOLE_TYPE);
+                                notifyUI(p.message, sender, CONSOLE_TYPE);
                             }
                         }
                         Log.d(TAG, "rebuild sync info received cache and updated UI");
@@ -483,7 +489,7 @@ public class MulticastManager {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "processInComingSyncInfoMessage -> " + message + " fromIP -> " + fromIP);
+//                Log.d(TAG, "processInComingSyncInfoMessage -> " + message + " fromIP -> " + fromIP);
                 Iterator<P2PSyncInfo> infos = p2PDBApiImpl.deSerializeP2PSyncInfoFromJson(message).iterator();
                 while (infos.hasNext()) {
                     P2PSyncInfo info = infos.next();
@@ -495,7 +501,7 @@ public class MulticastManager {
                     } else if (status.isOutOfSyncMessage()) {
                         notifyUI(info.message + " with sequence " + info.getSequence() + " ---------> out of sync processed with filling Missing type message ", info.getSender(), LOG_TYPE);
                         String key = info.getDeviceId() + "_" + info.getUserId() + "_" + Long.valueOf(info.getSequence().longValue());
-                        Log.d(TAG, "processing out of sync data message for key:" + key + " and message:" + info.message);
+                        Log.d(TAG, "processing out of sync data message for key:" + key + " and sequence:" + info.sequence);
                         String rMessage = p2PDBApiImpl.persistOutOfSyncP2PSyncMessage(info);
                         // generate handshaking request
                         if (status.isOutOfSyncMessage()) {
@@ -606,6 +612,7 @@ public class MulticastManager {
                 if (myHandShakingMessages.keySet().contains(userKey)) {
                     HandShakingInfo infoFromOtherDevice = uniqueHandShakeInfosReceived.get(userKey);
                     HandShakingInfo infoFromMyDevice = myHandShakingMessages.get(userKey);
+                    long askedThreshold = infoFromMyDevice.getSequence().longValue() > SYNC_NUMBER_OF_LAST_MESSAGES ? infoFromMyDevice.getSequence().longValue() + 1 - SYNC_NUMBER_OF_LAST_MESSAGES : -1;
                     if (infoFromMyDevice.getSequence().longValue() > infoFromOtherDevice.getSequence().longValue()) {
                         Log.d(TAG, "removing from uniqueHandShakeInfosReceived for key:" + userKey + " as infoFromMyDevice.getSequence()" + infoFromMyDevice.getSequence() + " infoFromOtherDevice.getSequence()" + infoFromOtherDevice.getSequence());
                         uniqueHandShakeInfosReceived.remove(userKey);
@@ -622,13 +629,25 @@ public class MulticastManager {
                             list2 = Lists.newArrayList(Splitter.on(",").split(otherDeviceMissingMessageSequences));
                         }
                         List<String> missingSequencesToAsk = new ArrayList<>(CollectionUtils.subtract(list1, list2));
-                        if (missingSequencesToAsk != null && missingSequencesToAsk.size() > 0) {
-                            infoFromOtherDevice.setMissingMessages(StringUtils.join(missingSequencesToAsk, ","));
+                        if (askedThreshold > -1) {
+                            CollectionUtils.filter(missingSequencesToAsk, new Predicate<String>() {
+                                @Override
+                                public boolean evaluate(String o) {
+                                    return o.compareTo(String.valueOf(askedThreshold)) >= 0;
+                                }
+                            });
+                        }
+                        Set<String> missingMessagesSetToAsk = ImmutableSet.copyOf(missingSequencesToAsk);
+                        if (missingMessagesSetToAsk != null && missingMessagesSetToAsk.size() > 0) {
+                            infoFromOtherDevice.setMissingMessages(StringUtils.join(missingMessagesSetToAsk, ","));
                             infoFromOtherDevice.setStartingSequence(infoFromOtherDevice.getSequence() + 1);
                         } else {
                             Log.d(TAG, "removing from uniqueHandShakeInfosReceived for key:" + userKey + " as infoFromMyDevice.getSequence()" + infoFromMyDevice.getSequence() + " infoFromOtherDevice.getSequence()" + infoFromOtherDevice.getSequence());
                             uniqueHandShakeInfosReceived.remove(userKey);
                         }
+                        missingSequencesToAsk = null;
+                        missingMessagesSetToAsk = null;
+
                     } else {
                         Log.d(TAG, "uniqueHandShakeInfosReceived for key:" + userKey + " as infoFromOtherDevice.setStartingSequence" + infoFromMyDevice.getSequence().longValue());
                         // take other device's missing keys remove
@@ -647,10 +666,27 @@ public class MulticastManager {
                             list2 = Lists.newArrayList(Splitter.on(",").split(otherDeviceMissingMessageSequences));
                         }
                         List<String> missingSequencesToAsk = new ArrayList<>(CollectionUtils.subtract(list1, list2));
-                        if (missingSequencesToAsk != null && missingSequencesToAsk.size() > 0) {
-                            infoFromOtherDevice.setMissingMessages(StringUtils.join(missingSequencesToAsk, ","));
+                        if (askedThreshold > -1) {
+                            CollectionUtils.filter(missingSequencesToAsk, new Predicate<String>() {
+                                @Override
+                                public boolean evaluate(String o) {
+                                    return o.compareTo(String.valueOf(askedThreshold)) >= 0;
+                                }
+                            });
                         }
-                        infoFromOtherDevice.setStartingSequence(infoFromMyDevice.getSequence().longValue() + 1);
+                        Set<String> missingMessagesSetToAsk = ImmutableSet.copyOf(missingSequencesToAsk);
+                        if (missingMessagesSetToAsk != null && missingMessagesSetToAsk.size() > 0) {
+                            infoFromOtherDevice.setMissingMessages(StringUtils.join(missingMessagesSetToAsk, ","));
+                        }
+                        //infoFromOtherDevice.setStartingSequence(infoFromMyDevice.getSequence().longValue() + 1);
+                        if(infoFromOtherDevice.getSequence() > SYNC_NUMBER_OF_LAST_MESSAGES) {
+                            infoFromOtherDevice.setStartingSequence(infoFromOtherDevice.getSequence() - SYNC_NUMBER_OF_LAST_MESSAGES + 1);
+                        } else {
+                            infoFromOtherDevice.setStartingSequence(infoFromMyDevice.getSequence().longValue() + 1);
+                        }
+
+                        missingSequencesToAsk = null;
+                        missingMessagesSetToAsk = null;
                     }
                 }
             }
@@ -667,7 +703,9 @@ public class MulticastManager {
                 if (t.getMissingMessages() != null && t.getMissingMessages().length() > 0) {
 
                     List<String> missingMessages = Lists.newArrayList(Splitter.on(",").split(t.getMissingMessages()));
-                    for (String m : missingMessages) {
+                    Set<String> missingMessagesSet = ImmutableSet.copyOf(missingMessages);
+                    missingMessages = null;
+                    for (String m : missingMessagesSet) {
                         HandShakingInfo n = new HandShakingInfo(t.getUserId(), t.getDeviceId(), t.getSequence(), null);
                         n.setFrom(t.getFrom());
                         n.setStartingSequence(Long.valueOf(m));

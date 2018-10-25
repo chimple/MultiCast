@@ -69,6 +69,7 @@ import static org.chimple.flores.application.P2PContext.LOG_TYPE;
 import static org.chimple.flores.application.P2PContext.NEW_MESSAGE_ADDED;
 import static org.chimple.flores.application.P2PContext.SHARED_PREF;
 import static org.chimple.flores.application.P2PContext.newMessageAddedOnDevice;
+import static org.chimple.flores.db.AppDatabase.SYNC_NUMBER_OF_LAST_MESSAGES;
 
 import org.chimple.flores.FloresPlugin;
 
@@ -171,39 +172,40 @@ public class P2PDBApiImpl {
         Long lastValidSequence = db.p2pSyncDao().fetchMinValidSequenceByUserAndDevice(message.getUserId(), message.getDeviceId(), message.sequence);
         if (lastValidSequence != null) {
             for (int i = lastValidSequence.intValue() + 1; i < message.sequence; i++) {
-                Log.i(TAG, "in persistOutOfSyncP2PSyncMessage --> got last valid sequence:" + lastValidSequence.longValue());
-                P2PSyncInfo missingP2P = new P2PSyncInfo(message.userId, message.deviceId, new Long(i), message.recipientUserId, null, DBSyncManager.MessageTypes.MISSING.type(), message.getCreatedAt());
-                Log.i(TAG, "inserted out of sync message" + missingP2P.toString());
-                Log.i(TAG, "in persistOutOfSyncP2PSyncMessage --> inserted out of sync message userId:" + message.userId + " deviceId:" + message.deviceId + "sequence:" + i + "messageType:" + DBSyncManager.MessageTypes.MISSING.type());
                 Long existingId = db.p2pSyncDao().findId(message.userId, message.deviceId, message.sequence);
-                missingP2P.id = existingId;
-                db.p2pSyncDao().insertP2PSyncInfo(missingP2P);
-                manager.notifyUI(message.message + "inserted ----> missing message with sequence:" + i, message.getSender(), LOG_TYPE);
+                if (existingId == null) {
+                    P2PSyncInfo missingP2P = new P2PSyncInfo(message.userId, message.deviceId, new Long(i), message.recipientUserId, null, DBSyncManager.MessageTypes.MISSING.type(), message.getCreatedAt());
+                    Log.i(TAG, "in persistOutOfSyncP2PSyncMessage --> inserted missing message userId:" + message.userId + " deviceId:" + message.deviceId + "sequence:" + i + "messageType:" + DBSyncManager.MessageTypes.MISSING.type());
+                    db.p2pSyncDao().insertP2PSyncInfo(missingP2P);
+                    manager.notifyUI(message.message + "inserted ----> missing message with sequence:" + i, message.getSender(), LOG_TYPE);
+                }
             }
         }
 
         P2PSyncInfo found = db.p2pSyncDao().fetchByUserAndDeviceAndSequence(message.getUserId(), message.getDeviceId(), message.sequence);
-        if (found == null) {
-            db.p2pSyncDao().insertP2PSyncInfo(message);
-            Log.i(TAG, "inserted data" + message);
-            manager.getAllSyncInfosReceived().add(message.getDeviceId() + "_" + message.getUserId() + "_" + Long.valueOf(message.getSequence().longValue()));
-            manager.notifyUI(message.message + "inserted ----> out of sync with sequence:" + message.getSequence(), message.getSender(), CONSOLE_TYPE);
-            SharedPreferences pref = this.context.getSharedPreferences(SHARED_PREF, 0);
-            String userId = pref.getString("USER_ID", null); // getting String
-            try {
-                if ((userId != null && message.recipientUserId != null && userId.equals(message.getRecipientUserId())) || message.messageType.equals("Photo")) {
-                    Log.i(TAG, "messageReceived intent constructing for user" + userId);
-//                    FloresPlugin.onMessageReceived(message);
-                    //LocalBroadcastManager.getInstance(this.context).sendBroadcast(intent);
-                    Log.i(TAG, "messageReceived intent sent successfully");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                Log.i(TAG, "messageReceived intent failed");
-            }
-        } else {
-            Log.i(TAG, "existing data" + message);
+        if (found != null) {
+            message.id = found.id;
         }
+
+
+        db.p2pSyncDao().insertP2PSyncInfo(message);
+        Log.i(TAG, "inserted data" + message);
+        manager.getAllSyncInfosReceived().add(message.getDeviceId() + "_" + message.getUserId() + "_" + Long.valueOf(message.getSequence().longValue()));
+        manager.notifyUI(message.message + "inserted ----> out of sync with sequence:" + message.getSequence(), message.getSender(), CONSOLE_TYPE);
+        SharedPreferences pref = this.context.getSharedPreferences(SHARED_PREF, 0);
+        String userId = pref.getString("USER_ID", null); // getting String
+        try {
+            if ((userId != null && message.recipientUserId != null && userId.equals(message.getRecipientUserId())) || message.messageType.equals("Photo")) {
+//                    Log.i(TAG, "messageReceived intent constructing for user" + userId);
+//                    FloresPlugin.onMessageReceived(message);
+                //LocalBroadcastManager.getInstance(this.context).sendBroadcast(intent);
+//                    Log.i(TAG, "messageReceived intent sent successfully");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.i(TAG, "messageReceived intent failed");
+        }
+
         return message.message;
     }
 
@@ -409,12 +411,27 @@ public class P2PDBApiImpl {
             P2PLatestInfoByUserAndDevice[] infos = db.p2pSyncDao().getLatestInfoAvailableByUserIdAndDeviceId();
             for (P2PLatestInfoByUserAndDevice info : infos) {
                 if (info.userId != null && info.deviceId != null) {
-                    Log.d(TAG, "checking for user:" + info.userId + " and device:" + info.deviceId);
+                    Log.d(TAG, "checking for user:" + info.userId + " fetchByUserAndDeviceBetweenSequencesand device:" + info.deviceId + " and sequence:" + info.sequence);
                     P2PLatestInfoByUserAndDevice[] missingRecords = db.p2pSyncDao().getMissingMessagesByUserIdAndDeviceId(info.userId, info.deviceId);
-                    Log.d(TAG, "missingRecords:" + missingRecords.length);
-                    List<P2PLatestInfoByUserAndDevice> missingRecordsList = Arrays.asList(missingRecords);
-                    Collection missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
-                    String missingRecordsStr = StringUtils.join(missingSequences, ",");
+                    String missingRecordsStr = null;
+                    if (missingRecords.length > 0) {
+                        long startingSequence = info.sequence.longValue() > SYNC_NUMBER_OF_LAST_MESSAGES ? info.sequence.longValue() - SYNC_NUMBER_OF_LAST_MESSAGES + 1 : 1;
+                        Log.d(TAG, "startingSequence in serializeHandShakingMessage ---> " + startingSequence);
+                        P2PSyncInfo[] rs = db.p2pSyncDao().fetchByUserAndDeviceBetweenSequences(info.userId, info.deviceId, startingSequence, info.sequence.longValue());
+                        StringBuilder missingRecordsBuffer = new StringBuilder();
+                        for (P2PSyncInfo p : rs) {
+                            if (p.getMessageType().equals(DBSyncManager.MessageTypes.MISSING.type())) {
+                                missingRecordsBuffer.append("0");
+                            } else {
+                                missingRecordsBuffer.append("1");
+                            }
+                        }
+                        missingRecordsStr = missingRecordsBuffer.toString();
+                    }
+
+//                    List<P2PLatestInfoByUserAndDevice> missingRecordsList = Arrays.asList(missingRecords);
+//                    Collection missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
+//                    String missingRecordsStr = StringUtils.join(missingSequences, ",");
                     Log.d(TAG, "missingRecordsStr:" + missingRecordsStr);
                     handShakingInfos.add(new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr));
                 }

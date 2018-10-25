@@ -7,7 +7,7 @@
   </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -16,17 +16,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8186704e-1b6b-48d5-a026-bc23cb41ebce" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileContent/fileContent.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskJars.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskJars.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PContext.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/AppDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/AppDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/DatabaseInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/DatabaseInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/dao/P2PSyncInfoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/dao/P2PSyncInfoDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/P2PSyncInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/P2PSyncInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastListenerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastListenerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfoDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfoDeserializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastSenderThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastSenderThread.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -49,65 +58,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MulticastManager.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MulticastManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="59" column="48" selection-start-line="59" selection-start-column="35" selection-end-line="59" selection-end-column="48" />
+            <state relative-caret-position="3047">
+              <caret line="816" column="34" selection-start-line="816" selection-start-column="34" selection-end-line="816" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#39271#39272#0" expanded="true" />
+                <element signature="e#39331#39332#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="P2PDBApiImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java">
+      <file leaf-file-name="MulticastListenerThread.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastListenerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5040">
-              <caret line="406" column="13" selection-start-line="406" selection-start-column="13" selection-end-line="406" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ExampleInstrumentedTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="35" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="P2PContext.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PContext.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="18" column="48" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="48" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="P2PSyncInfoDao.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/dao/P2PSyncInfoDao.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="20" column="25" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
+            <state relative-caret-position="345">
+              <caret line="33" column="52" selection-end-line="72" />
             </state>
           </provider>
         </entry>
@@ -115,35 +84,80 @@
       <file leaf-file-name="MulticastSenderThread.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastSenderThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="24" column="39" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+            <state relative-caret-position="375">
+              <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MulticastListenerThread.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastListenerThread.java">
+      <file leaf-file-name="P2PDBApiImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="28" column="22" lean-forward="true" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
+            <state relative-caret-position="362">
+              <caret line="1024" column="13" selection-start-line="1024" selection-start-column="13" selection-end-line="1024" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatagramPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/java/net/DatagramPacket.java">
+      <file leaf-file-name="AppDatabase.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/AppDatabase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="274">
-              <caret line="363" column="29" selection-start-line="363" selection-start-column="29" selection-end-line="363" selection-end-column="29" />
+            <state relative-caret-position="165">
+              <caret line="23" column="56" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="56" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MulticastThread.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastThread.java">
+      <file leaf-file-name="SyncItemDeserializer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/SyncItemDeserializer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="25" column="110" selection-start-line="25" selection-start-column="103" selection-end-line="25" selection-end-column="110" />
+            <state relative-caret-position="60">
+              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="P2PSyncInfoDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/dao/P2PSyncInfoDao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="780">
+              <caret line="63" column="16" selection-start-line="63" selection-start-column="16" selection-end-line="63" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HandShakingInfoDeserializer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfoDeserializer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="735">
+              <caret line="61" column="33" selection-end-line="80" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExampleInstrumentedTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="13" column="36" selection-start-line="13" selection-start-column="36" selection-end-line="13" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="P2PContext.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PContext.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1245">
+              <caret line="94" column="25" selection-start-line="94" selection-start-column="25" selection-end-line="94" selection-end-column="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -159,36 +173,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>logged</find>
-      <find>o</find>
-      <find>FileWriter</find>
-      <find>sdc</find>
-      <find>Environment</find>
-      <find>appendLog</find>
-      <find>db</find>
-      <find>notifyUI</find>
-      <find>onmessageRe</find>
-      <find>fresh</find>
-      <find>onre</find>
-      <find>ref</find>
-      <find>refresh</find>
-      <find>Appd</find>
-      <find>p2PDBApiImpl</find>
-      <find>445</find>
-      <find>MULTICAST_IP_PORT</find>
-      <find>processInComingSyncRequestMessage</find>
-      <find>handler</find>
-      <find>new Handler</find>
-      <find>new CountDo</find>
-      <find>new MulticastListenerThread</find>
-      <find>new Count</find>
-      <find>AsyncTask.execute</find>
-      <find>refreshDeviceReceiver</find>
+      <find>sending initial handshaking message</find>
+      <find>uniqueHandShakeInfosReceived for key</find>
+      <find>out of order</find>
+      <find>generateSyncInfoPullRequest</find>
+      <find>validIncomingSyncMessage</find>
+      <find>uniqueHandShakeInfosReceived</find>
+      <find>processing out of sync data message for key</find>
+      <find>existing missing data</find>
+      <find>processIncomingsy</find>
+      <find>allSyncInfosReceived()</find>
+      <find>validating</find>
+      <find>missingRecordsStr</find>
+      <find>missingRecords:</find>
+      <find>dest</find>
+      <find>delete</find>
+      <find>deleteMessage</find>
+      <find>deleteMe</find>
+      <find>refreshall</find>
+      <find>computeSyncInfoRequired user ke</find>
       <find>broadCastRefreshDevice</find>
-      <find>refreshDevice</find>
-      <find>Async</find>
-      <find>receive</find>
-      <find>.receive</find>
+      <find>fr</find>
+      <find>refreshDeviceReceiver</find>
+      <find>HandShakingInfoDeserializer.java</find>
+      <find>fetchMinValidSequenceByUserAndDevice(messa</find>
+      <find>persistP2PSyncMessage</find>
+      <find>Log.d(TAG, &quot;checking for user:&quot; + info.userId + &quot; fetchByUserAndDevi</find>
+      <find>p2pdb</find>
+      <find>missing</find>
+      <find>P2PDBApiImpl</find>
+      <find>sendFindBuddyMessage</find>
     </findStrings>
     <replaceStrings>
       <replace>P2PContext</replace>
@@ -2463,23 +2477,23 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/FloresPlugin.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PApplication.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfoDeserializer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/DBSyncManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/P2PLatestInfoByUserAndDevice.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfo.java" />
-        <option value="$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MessageStatus.java" />
         <option value="$PROJECT_DIR$/app/build/generated/source/apt/debug/org/chimple/flores/db/dao/P2PSyncInfoDao_Impl.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/dao/P2PSyncInfoDao.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/DatabaseInitializer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/P2PSyncInfo.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/AppDatabase.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PContext.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastSenderThread.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastListenerThread.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/AppDatabase.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfoDeserializer.java" />
+        <option value="$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PContext.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/dao/P2PSyncInfoDao.java" />
       </list>
     </option>
   </component>
@@ -2493,6 +2507,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2504,8 +2520,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -2872,8 +2886,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Android Instrumented Tests.testSyncNewLogic()" />
-        <item itemvalue="Android Instrumented Tests.testNewLogic()" />
         <item itemvalue="Android Instrumented Tests.testNewHandShaking...()" />
+        <item itemvalue="Android Instrumented Tests.testNewLogic()" />
         <item itemvalue="Android Instrumented Tests.testHandShakingMes...() (1)" />
         <item itemvalue="Android Instrumented Tests.testHandShakingMes...()" />
       </list>
@@ -2893,58 +2907,58 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 11m 11s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 07h 28m 17s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 16m 13s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 08h 57m 40s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 22m 06s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 09h 01m 21s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 29m 00s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 09h 04m 28s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 46m 39s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 09h 21m 37s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 51m 09s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 09h 28m 49s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 54m 10s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 09h 34m 12s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 59m 00s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 09h 37m 34s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.18 at 22h 59m 27s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 09h 53m 23s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
-    <history-entry file="testSyncNewLogic() - 2018.10.19 at 09h 33m 32s.xml">
+    <history-entry file="testSyncNewLogic() - 2018.10.24 at 09h 57m 39s.xml">
       <configuration name="testSyncNewLogic()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="985" extended-state="0" />
     <layout>
-      <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Android Profiler" order="7" />
       <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Flutter Outline" order="3" />
-      <window_info anchor="bottom" id="Logcat" order="7" weight="0.5146396" />
+      <window_info anchor="bottom" id="Logcat" order="7" weight="0.6238739" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
       <window_info anchor="bottom" id="Build" order="7" weight="0.39527026" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2725225" />
-      <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" weight="0.32967034" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.49324325" />
+      <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" weight="0.1990232" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32995495" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.40315315" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.3828829" />
       <window_info id="Captures" order="2" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1916972" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32995495" />
@@ -3002,12 +3016,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastSenderThread.java</url>
-          <line>27</line>
-          <properties />
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java</url>
           <line>376</line>
           <properties />
@@ -3057,13 +3065,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
-          <line>695</line>
+          <line>733</line>
           <properties />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
-          <line>744</line>
+          <line>782</line>
           <properties />
           <option name="timeStamp" value="19" />
         </line-breakpoint>
@@ -3086,12 +3094,6 @@
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
-          <line>449</line>
-          <properties />
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java</url>
           <line>265</line>
           <properties />
@@ -3105,130 +3107,143 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
-          <line>687</line>
+          <line>725</line>
           <properties />
           <option name="timeStamp" value="69" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
-          <line>442</line>
+          <line>448</line>
           <properties />
           <option name="timeStamp" value="80" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java</url>
-          <line>407</line>
+          <url>file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java</url>
+          <line>246</line>
           <properties />
-          <option name="timeStamp" value="82" />
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java</url>
+          <line>247</line>
+          <properties />
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java</url>
+          <line>243</line>
+          <properties />
+          <option name="timeStamp" value="124" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java</url>
+          <line>245</line>
+          <properties />
+          <option name="timeStamp" value="125" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>452</line>
+          <properties />
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>455</line>
+          <properties />
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>607</line>
+          <properties />
+          <option name="timeStamp" value="134" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>605</line>
+          <properties />
+          <option name="timeStamp" value="135" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java</url>
+          <line>269</line>
+          <properties />
+          <option name="timeStamp" value="137" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java</url>
-          <line>410</line>
+          <line>473</line>
           <properties />
-          <option name="timeStamp" value="83" />
+          <option name="timeStamp" value="138" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java</url>
-          <line>418</line>
+          <line>490</line>
           <properties />
-          <option name="timeStamp" value="84" />
+          <option name="timeStamp" value="139" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java</url>
-          <line>412</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>639</line>
           <properties />
-          <option name="timeStamp" value="85" />
+          <option name="timeStamp" value="140" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java</url>
-          <line>414</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>676</line>
           <properties />
-          <option name="timeStamp" value="86" />
+          <option name="timeStamp" value="142" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java</url>
-          <line>416</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>677</line>
           <properties />
-          <option name="timeStamp" value="87" />
+          <option name="timeStamp" value="143" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java</url>
-          <line>422</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>640</line>
           <properties />
-          <option name="timeStamp" value="88" />
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>408</line>
+          <properties />
+          <option name="timeStamp" value="145" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>294</line>
+          <properties />
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>305</line>
+          <properties />
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java</url>
+          <line>296</line>
+          <properties />
+          <option name="timeStamp" value="148" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="92" />
+      <option name="time" value="149" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/java/net/MulticastSocket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6105">
-          <caret line="431" column="26" selection-start-line="431" selection-start-column="16" selection-end-line="431" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/android/content/SharedPreferences.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="42" column="17" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/P2PUserIdDeviceIdAndMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/SyncRequestMessageDeserializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="39" column="60" selection-start-line="39" selection-start-column="60" selection-end-line="39" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/java/lang/IllegalArgumentException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/java/util/Collections.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2325">
-          <caret line="195" column="27" selection-start-line="195" selection-start-column="27" selection-end-line="195" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.0/ed233607c5c11e1a13a3fd760033ed5d9fe525c2/guava-23.0-sources.jar!/com/google/common/collect/Lists.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9315">
-          <caret line="697" column="34" selection-start-line="697" selection-start-column="34" selection-end-line="697" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/app_bar.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="15" selection-end-column="45" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
       <provider editor-type-id="android-designer2">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1050">
           <caret line="70" column="18" selection-end-line="99" />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
@@ -3265,13 +3280,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
         </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PApplication.java">
@@ -3289,13 +3304,6 @@
       </provider>
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfoDeserializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="42" column="67" selection-start-line="42" selection-start-column="48" selection-end-line="42" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/P2PLatestInfoByUserAndDevice.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -3364,24 +3372,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="46" column="96" selection-start-line="46" selection-start-column="81" selection-end-line="46" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/android.arch.persistence.room/runtime/1.1.1/ba5dd1320b8a0e9a5beb32eaa163a49abbe83e02/runtime-1.1.1-sources.jar!/android/arch/persistence/room/RoomDatabase.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3315">
           <caret line="271" column="16" selection-start-line="271" selection-start-column="16" selection-end-line="271" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="56" />
         </state>
       </provider>
     </entry>
@@ -3431,43 +3425,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-          <folding>
-            <element signature="e#2240#2241#0" expanded="true" />
-            <element signature="e#2268#2269#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build/generated/source/apt/debug/org/chimple/flores/db/AppDatabase_Impl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/AppDatabase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="35" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="18" column="48" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastThread.java">
@@ -3477,58 +3440,162 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/dao/P2PSyncInfoDao.java">
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/java/net/DatagramPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="20" column="25" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5040">
-          <caret line="406" column="13" selection-start-line="406" selection-start-column="13" selection-end-line="406" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="4845">
+          <caret line="363" column="29" selection-start-line="363" selection-start-column="29" selection-end-line="363" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="59" column="48" selection-start-line="59" selection-start-column="35" selection-end-line="59" selection-end-column="48" />
+        <state relative-caret-position="375">
+          <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="57" column="40" selection-start-line="57" selection-start-column="40" selection-end-line="57" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/java/lang/StringBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="934">
+          <caret line="405" column="26" selection-start-line="405" selection-start-column="18" selection-end-line="405" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/android.arch.persistence.room/runtime/1.1.1/ba5dd1320b8a0e9a5beb32eaa163a49abbe83e02/runtime-1.1.1-sources.jar!/android/arch/persistence/room/util/StringUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.7/e7e36219edde1c66c93495a75490d8f526c377cb/commons-lang3-3.7-sources.jar!/org/apache/commons/lang3/StringUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57015">
+          <caret line="3847" column="29" selection-start-line="3847" selection-start-column="29" selection-end-line="3847" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/baf95d8519fc1a11d388f8543cb40cd2bb9d66dc/gson-2.8.0-sources.jar!/com/google/gson/internal/bind/TreeTypeAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/baf95d8519fc1a11d388f8543cb40cd2bb9d66dc/gson-2.8.0-sources.jar!/com/google/gson/internal/bind/TypeAdapterRuntimeTypeWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/26.0-android/d77b633b56308a972029983a244f6bb9e24e1924/guava-26.0-android-sources.jar!/com/google/common/base/Predicates.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3225">
+          <caret line="242" column="40" selection-start-line="242" selection-start-column="40" selection-end-line="242" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastListenerThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="33" column="52" selection-end-line="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastSenderThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/SyncItemDeserializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/application/P2PContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1245">
+          <caret line="94" column="25" selection-start-line="94" selection-start-column="25" selection-end-line="94" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastSenderThread.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/entity/HandShakingInfoDeserializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="24" column="39" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+        <state relative-caret-position="735">
+          <caret line="61" column="33" selection-end-line="80" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/com/android/systemui/statusbar/phone/AppIconDragShadowBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-297" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/AppDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="23" column="56" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="56" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/org/chimple/flores/ExampleInstrumentedTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="36" selection-start-line="13" selection-start-column="36" selection-end-line="13" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/dao/P2PSyncInfoDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="63" column="16" selection-start-line="63" selection-start-column="16" selection-end-line="63" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/db/P2PDBApiImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="1024" column="13" selection-start-line="1024" selection-start-column="13" selection-end-line="1024" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-27/java/net/DatagramPacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="363" column="29" selection-start-line="363" selection-start-column="29" selection-end-line="363" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/chimple/flores/multicast/MulticastListenerThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="28" column="22" lean-forward="true" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
+        <state relative-caret-position="3047">
+          <caret line="816" column="34" selection-start-line="816" selection-start-column="34" selection-end-line="816" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#39271#39272#0" expanded="true" />
+            <element signature="e#39331#39332#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
