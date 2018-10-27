@@ -1,5 +1,7 @@
 package org.chimple.flores.db;
 
+import android.arch.persistence.room.Query;
+import android.arch.persistence.room.util.StringUtil;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,6 +54,7 @@ import org.chimple.flores.db.entity.HandShakingMessageDeserializer;
 import org.chimple.flores.db.entity.P2PLatestInfoByUserAndDevice;
 import org.chimple.flores.db.entity.P2PSyncDeviceStatus;
 import org.chimple.flores.db.entity.P2PSyncInfo;
+import org.chimple.flores.db.entity.P2PUserIdDeviceId;
 import org.chimple.flores.db.entity.P2PUserIdDeviceIdAndMessage;
 import org.chimple.flores.db.entity.P2PUserIdMessage;
 import org.chimple.flores.db.entity.ProfileMessage;
@@ -69,6 +72,8 @@ import static org.chimple.flores.application.P2PContext.LOG_TYPE;
 import static org.chimple.flores.application.P2PContext.NEW_MESSAGE_ADDED;
 import static org.chimple.flores.application.P2PContext.SHARED_PREF;
 import static org.chimple.flores.application.P2PContext.newMessageAddedOnDevice;
+import static org.chimple.flores.application.P2PContext.refreshDevice;
+import static org.chimple.flores.db.AppDatabase.PURGE_MESSAGE_LIMIT;
 import static org.chimple.flores.db.AppDatabase.SYNC_NUMBER_OF_LAST_MESSAGES;
 
 import org.chimple.flores.FloresPlugin;
@@ -857,6 +862,23 @@ public class P2PDBApiImpl {
         intent.putExtra(NEW_MESSAGE_ADDED, info);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
+
+        long purgeLimit = PURGE_MESSAGE_LIMIT + SYNC_NUMBER_OF_LAST_MESSAGES;
+        List<P2PUserIdDeviceId> purgeSenders = db.p2pSyncDao().findSenderToPurge(purgeLimit);
+        for (P2PUserIdDeviceId s : purgeSenders) {
+            Long latestUserProfileId = db.p2pSyncDao().findLatestProfilePhotoId(s.userId, s.deviceId);
+            List<Long> topIdsToRetain = Arrays.asList(db.p2pSyncDao().findTopMessagesToRetain(SYNC_NUMBER_OF_LAST_MESSAGES));
+            List<Long> ids = new ArrayList<Long>();
+            if (latestUserProfileId != null) {
+                ids.add(latestUserProfileId);
+            }
+            ids.addAll(topIdsToRetain);
+
+            String strIds = StringUtils.join(ids, ',');
+            Log.d(TAG, "ids to retain:" + strIds);
+            db.p2pSyncDao().purgeMessages(ids);
+
+        }
     }
 
     public boolean addMessage(String userId, String recipientId, String messageType, String message, Boolean status, String sessionId) {

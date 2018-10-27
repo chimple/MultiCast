@@ -10,6 +10,7 @@ import java.util.List;
 import org.chimple.flores.db.DBSyncManager;
 import org.chimple.flores.db.entity.P2PLatestInfoByUserAndDevice;
 import org.chimple.flores.db.entity.P2PSyncInfo;
+import org.chimple.flores.db.entity.P2PUserIdDeviceId;
 import org.chimple.flores.db.entity.P2PUserIdDeviceIdAndMessage;
 import org.chimple.flores.db.entity.P2PUserIdMessage;
 
@@ -20,6 +21,8 @@ public interface P2PSyncInfoDao {
     @Query("SELECT * FROM P2PSyncInfo where message_type != 'missing' order by logged_at asc")
     public P2PSyncInfo[] refreshAllMessages();
 
+    @Query("SELECT count(*) FROM P2PSyncInfo where message_type != 'missing'")
+    public Long totalMessages();
 
     @Query("SELECT * FROM P2PSyncInfo WHERE user_id=:userId AND device_id=:deviceId")
     public P2PSyncInfo[] getSyncInformationByUserIdAndDeviceId(String userId, String deviceId);
@@ -69,6 +72,21 @@ public interface P2PSyncInfoDao {
     @Query("DELETE FROM P2PSyncInfo WHERE user_id=:userId AND device_id=:deviceId and sequence = :sequence")
     public void deleteMessage(String userId, String deviceId, Long sequence);
 
+    @Query("SELECT max(id) FROM P2PSyncInfo WHERE user_id=:userId AND device_id=:deviceId and message_type='Photo'")
+    public Long findLatestProfilePhotoId(String userId, String deviceId);
+
+    @Query("select user_id, device_id from P2PSyncInfo where message_type is not null and message_type != 'Photo' group by sender having count(*) > :purgeLimit")
+    public List<P2PUserIdDeviceId> findSenderToPurge(long purgeLimit);
+
+    @Query("select max(id) from P2PSyncInfo where user_id != :userId and device_id != :deviceId and message_type = 'Photo' group by sender")
+    public Long[] findLatestProfilePhotoIdForOtherUsers(String userId, String deviceId);
+
+    @Query("SELECT c.id FROM P2PSyncInfo AS c INNER JOIN (  SELECT a.id, COUNT(*) AS ranknum FROM P2PSyncInfo AS a INNER JOIN P2PSyncInfo AS b ON (a.sender = b.sender) AND (a.sequence <= b.sequence) GROUP BY a.id HAVING COUNT(*) <= :limit) AS d ON (c.id = d.id) ORDER BY c.sender, d.ranknum")
+    public Long[] findTopMessagesToRetain(long limit);
+
+
+    @Query("DELETE FROM P2PSyncInfo WHERE id not in (:ids)")
+    public void purgeMessages(List<Long> ids);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public Long insertP2PSyncInfo(P2PSyncInfo info);

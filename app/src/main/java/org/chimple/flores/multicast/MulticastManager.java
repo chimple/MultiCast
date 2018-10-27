@@ -469,7 +469,7 @@ public class MulticastManager {
             status.setDuplicateMessage(true);
             status.setOutOfSyncMessage(false);
             isValid = false;
-        } else if (info.getSequence().longValue() != 1
+        } else if ((info.getSequence().longValue() - 1) != 0
                 && !allSyncInfosReceived.contains(iPreviousKey)) {
             Log.d(TAG, "found sync data message as out of sequence => previous key not found " + iPreviousKey + " for key:" + iKey);
             isValid = false;
