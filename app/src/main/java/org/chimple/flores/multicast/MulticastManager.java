@@ -347,7 +347,7 @@ public class MulticastManager {
     private boolean isHandShakingMessage(String message) {
         boolean isHandShakingMessage = false;
         if (message != null) {
-            String handShakeMessage = "\"message_type\":\"handshaking\"";
+            String handShakeMessage = "\"mt\":\"handshaking\"";
             isHandShakingMessage = message.contains(handShakeMessage);
         }
         return isHandShakingMessage;
@@ -356,14 +356,14 @@ public class MulticastManager {
     private boolean isSyncInfoMessage(String message) {
         boolean isSyncInfoMessage = false;
         if (message != null) {
-            String syncInfoMessage = "\"message_type\":\"syncInfoMessage\"";
+            String syncInfoMessage = "\"mt\":\"syncInfoMessage\"";
             isSyncInfoMessage = message.contains(syncInfoMessage);
         }
         return isSyncInfoMessage;
     }
 
     private boolean isSyncRequestMessage(String message) {
-        String messageType = "\"message_type\":\"syncInfoRequestMessage\"";
+        String messageType = "\"mt\":\"syncInfoRequestMessage\"";
         String messageType_1 = "\"mt\":\"syncInfoRequestMessage\"";
         return message != null && (message.contains(messageType) || message.contains(messageType_1)) ? true : false;
     }
@@ -576,6 +576,8 @@ public class MulticastManager {
             final Set<HandShakingInfo> allHandShakingInfos = sortHandShakingInfos(messages);
             Iterator<HandShakingInfo> itReceived = allHandShakingInfos.iterator();
             final Map<String, HandShakingInfo> uniqueHandShakeInfosReceived = new ConcurrentHashMap<String, HandShakingInfo>();
+            final Map<String, HandShakingInfo> photoProfileUpdateInfosReceived = new ConcurrentHashMap<String, HandShakingInfo>();
+
             while (itReceived.hasNext()) {
                 HandShakingInfo info = itReceived.next();
                 HandShakingInfo existingInfo = uniqueHandShakeInfosReceived.get(info.getUserId());
@@ -612,87 +614,109 @@ public class MulticastManager {
                 if (myHandShakingMessages.keySet().contains(userKey)) {
                     HandShakingInfo infoFromOtherDevice = uniqueHandShakeInfosReceived.get(userKey);
                     HandShakingInfo infoFromMyDevice = myHandShakingMessages.get(userKey);
-                    long askedThreshold = infoFromMyDevice.getSequence().longValue() > SYNC_NUMBER_OF_LAST_MESSAGES ? infoFromMyDevice.getSequence().longValue() + 1 - SYNC_NUMBER_OF_LAST_MESSAGES : -1;
-                    if (infoFromMyDevice.getSequence().longValue() > infoFromOtherDevice.getSequence().longValue()) {
-                        Log.d(TAG, "removing from uniqueHandShakeInfosReceived for key:" + userKey + " as infoFromMyDevice.getSequence()" + infoFromMyDevice.getSequence() + " infoFromOtherDevice.getSequence()" + infoFromOtherDevice.getSequence());
-                        uniqueHandShakeInfosReceived.remove(userKey);
-                    } else if (infoFromMyDevice.getSequence().longValue() == infoFromOtherDevice.getSequence().longValue()) {
-                        //check for missing keys, if the same then remove otherwise only add missing key for infoFromMyDevice
-                        String myMissingMessageSequences = infoFromMyDevice.getMissingMessages();
-                        String otherDeviceMissingMessageSequences = infoFromOtherDevice.getMissingMessages();
-                        List<String> list1 = new ArrayList<String>();
-                        List<String> list2 = new ArrayList<String>();
-                        if (myMissingMessageSequences != null) {
-                            list1 = Lists.newArrayList(Splitter.on(",").split(myMissingMessageSequences));
+
+                    if(infoFromMyDevice != null && infoFromOtherDevice != null) {
+                        Long latestProfilePhotoInfo = infoFromOtherDevice.getProfileSequence();
+                        Long latestUserProfileId = p2PDBApiImpl.findLatestProfilePhotoId(infoFromOtherDevice.getUserId(), infoFromOtherDevice.getDeviceId());
+
+                        if (latestUserProfileId != null && latestUserProfileId != null
+                                && latestUserProfileId.longValue() < latestProfilePhotoInfo.longValue()) {
+                            photoProfileUpdateInfosReceived.put(infoFromOtherDevice.getUserId(), infoFromOtherDevice);
                         }
-                        if (otherDeviceMissingMessageSequences != null) {
-                            list2 = Lists.newArrayList(Splitter.on(",").split(otherDeviceMissingMessageSequences));
-                        }
-                        List<String> missingSequencesToAsk = new ArrayList<>(CollectionUtils.subtract(list1, list2));
-                        if (askedThreshold > -1) {
-                            CollectionUtils.filter(missingSequencesToAsk, new Predicate<String>() {
-                                @Override
-                                public boolean evaluate(String o) {
-                                    return o.compareTo(String.valueOf(askedThreshold)) >= 0;
-                                }
-                            });
-                        }
-                        Set<String> missingMessagesSetToAsk = ImmutableSet.copyOf(missingSequencesToAsk);
-                        if (missingMessagesSetToAsk != null && missingMessagesSetToAsk.size() > 0) {
-                            infoFromOtherDevice.setMissingMessages(StringUtils.join(missingMessagesSetToAsk, ","));
-                            infoFromOtherDevice.setStartingSequence(infoFromOtherDevice.getSequence() + 1);
-                        } else {
+
+                        long askedThreshold = infoFromMyDevice.getSequence().longValue() > SYNC_NUMBER_OF_LAST_MESSAGES ? infoFromMyDevice.getSequence().longValue() + 1 - SYNC_NUMBER_OF_LAST_MESSAGES : -1;
+                        if (infoFromMyDevice.getSequence().longValue() > infoFromOtherDevice.getSequence().longValue()) {
                             Log.d(TAG, "removing from uniqueHandShakeInfosReceived for key:" + userKey + " as infoFromMyDevice.getSequence()" + infoFromMyDevice.getSequence() + " infoFromOtherDevice.getSequence()" + infoFromOtherDevice.getSequence());
                             uniqueHandShakeInfosReceived.remove(userKey);
-                        }
-                        missingSequencesToAsk = null;
-                        missingMessagesSetToAsk = null;
+                        } else if (infoFromMyDevice.getSequence().longValue() == infoFromOtherDevice.getSequence().longValue()) {
+                            //check for missing keys, if the same then remove otherwise only add missing key for infoFromMyDevice
+                            String myMissingMessageSequences = infoFromMyDevice.getMissingMessages();
+                            String otherDeviceMissingMessageSequences = infoFromOtherDevice.getMissingMessages();
+                            List<String> list1 = new ArrayList<String>();
+                            List<String> list2 = new ArrayList<String>();
+                            if (myMissingMessageSequences != null) {
+                                list1 = Lists.newArrayList(Splitter.on(",").split(myMissingMessageSequences));
+                            }
+                            if (otherDeviceMissingMessageSequences != null) {
+                                list2 = Lists.newArrayList(Splitter.on(",").split(otherDeviceMissingMessageSequences));
+                            }
+                            List<String> missingSequencesToAsk = new ArrayList<>(CollectionUtils.subtract(list1, list2));
+                            if (askedThreshold > -1) {
+                                CollectionUtils.filter(missingSequencesToAsk, new Predicate<String>() {
+                                    @Override
+                                    public boolean evaluate(String o) {
+                                        return o.compareTo(String.valueOf(askedThreshold)) >= 0;
+                                    }
+                                });
+                            }
+                            Set<String> missingMessagesSetToAsk = ImmutableSet.copyOf(missingSequencesToAsk);
+                            if (missingMessagesSetToAsk != null && missingMessagesSetToAsk.size() > 0) {
+                                infoFromOtherDevice.setMissingMessages(StringUtils.join(missingMessagesSetToAsk, ","));
+                                infoFromOtherDevice.setStartingSequence(infoFromOtherDevice.getSequence() + 1);
+                            } else {
+                                Log.d(TAG, "removing from uniqueHandShakeInfosReceived for key:" + userKey + " as infoFromMyDevice.getSequence()" + infoFromMyDevice.getSequence() + " infoFromOtherDevice.getSequence()" + infoFromOtherDevice.getSequence());
+                                uniqueHandShakeInfosReceived.remove(userKey);
+                            }
+                            missingSequencesToAsk = null;
+                            missingMessagesSetToAsk = null;
 
-                    } else {
-                        Log.d(TAG, "uniqueHandShakeInfosReceived for key:" + userKey + " as infoFromOtherDevice.setStartingSequence" + infoFromMyDevice.getSequence().longValue());
-                        // take other device's missing keys remove
-                        // take my missing keys and remove if the same as other device's missing keys
-                        // ask for all messages my sequence + 1
-                        // ask for all my missing keys messages also
-
-                        String myMissingMessageSequences = infoFromMyDevice.getMissingMessages();
-                        String otherDeviceMissingMessageSequences = infoFromOtherDevice.getMissingMessages();
-                        List<String> list1 = new ArrayList<String>();
-                        List<String> list2 = new ArrayList<String>();
-                        if (myMissingMessageSequences != null) {
-                            list1 = Lists.newArrayList(Splitter.on(",").split(myMissingMessageSequences));
-                        }
-                        if (otherDeviceMissingMessageSequences != null) {
-                            list2 = Lists.newArrayList(Splitter.on(",").split(otherDeviceMissingMessageSequences));
-                        }
-                        List<String> missingSequencesToAsk = new ArrayList<>(CollectionUtils.subtract(list1, list2));
-                        if (askedThreshold > -1) {
-                            CollectionUtils.filter(missingSequencesToAsk, new Predicate<String>() {
-                                @Override
-                                public boolean evaluate(String o) {
-                                    return o.compareTo(String.valueOf(askedThreshold)) >= 0;
-                                }
-                            });
-                        }
-                        Set<String> missingMessagesSetToAsk = ImmutableSet.copyOf(missingSequencesToAsk);
-                        if (missingMessagesSetToAsk != null && missingMessagesSetToAsk.size() > 0) {
-                            infoFromOtherDevice.setMissingMessages(StringUtils.join(missingMessagesSetToAsk, ","));
-                        }
-                        //infoFromOtherDevice.setStartingSequence(infoFromMyDevice.getSequence().longValue() + 1);
-                        if(infoFromOtherDevice.getSequence() > SYNC_NUMBER_OF_LAST_MESSAGES) {
-                            infoFromOtherDevice.setStartingSequence(infoFromOtherDevice.getSequence() - SYNC_NUMBER_OF_LAST_MESSAGES + 1);
                         } else {
-                            infoFromOtherDevice.setStartingSequence(infoFromMyDevice.getSequence().longValue() + 1);
-                        }
+                            Log.d(TAG, "uniqueHandShakeInfosReceived for key:" + userKey + " as infoFromOtherDevice.setStartingSequence" + infoFromMyDevice.getSequence().longValue());
+                            // take other device's missing keys remove
+                            // take my missing keys and remove if the same as other device's missing keys
+                            // ask for all messages my sequence + 1
+                            // ask for all my missing keys messages also
 
-                        missingSequencesToAsk = null;
-                        missingMessagesSetToAsk = null;
+                            String myMissingMessageSequences = infoFromMyDevice.getMissingMessages();
+                            String otherDeviceMissingMessageSequences = infoFromOtherDevice.getMissingMessages();
+                            List<String> list1 = new ArrayList<String>();
+                            List<String> list2 = new ArrayList<String>();
+                            if (myMissingMessageSequences != null) {
+                                list1 = Lists.newArrayList(Splitter.on(",").split(myMissingMessageSequences));
+                            }
+                            if (otherDeviceMissingMessageSequences != null) {
+                                list2 = Lists.newArrayList(Splitter.on(",").split(otherDeviceMissingMessageSequences));
+                            }
+                            List<String> missingSequencesToAsk = new ArrayList<>(CollectionUtils.subtract(list1, list2));
+                            if (askedThreshold > -1) {
+                                CollectionUtils.filter(missingSequencesToAsk, new Predicate<String>() {
+                                    @Override
+                                    public boolean evaluate(String o) {
+                                        return o.compareTo(String.valueOf(askedThreshold)) >= 0;
+                                    }
+                                });
+                            }
+                            Set<String> missingMessagesSetToAsk = ImmutableSet.copyOf(missingSequencesToAsk);
+                            if (missingMessagesSetToAsk != null && missingMessagesSetToAsk.size() > 0) {
+                                infoFromOtherDevice.setMissingMessages(StringUtils.join(missingMessagesSetToAsk, ","));
+                            }
+                            //infoFromOtherDevice.setStartingSequence(infoFromMyDevice.getSequence().longValue() + 1);
+                            if (infoFromOtherDevice.getSequence() > SYNC_NUMBER_OF_LAST_MESSAGES) {
+                                infoFromOtherDevice.setStartingSequence(infoFromOtherDevice.getSequence() - SYNC_NUMBER_OF_LAST_MESSAGES + 1);
+                            } else {
+                                infoFromOtherDevice.setStartingSequence(infoFromMyDevice.getSequence().longValue() + 1);
+                            }
+
+                            missingSequencesToAsk = null;
+                            missingMessagesSetToAsk = null;
+                        }
                     }
                 }
             }
 
 
             List<HandShakingInfo> valuesToSend = new ArrayList<HandShakingInfo>();
+
+            Collection<HandShakingInfo> photoValues = photoProfileUpdateInfosReceived.values();
+            Iterator itPhotoValues = photoValues.iterator();
+            while (itPhotoValues.hasNext()) {
+                HandShakingInfo t = (HandShakingInfo) itPhotoValues.next();
+                HandShakingInfo n = new HandShakingInfo(t.getUserId(), t.getDeviceId(), t.getProfileSequence(), null, null);
+                n.setFrom(t.getFrom());
+                n.setStartingSequence(Long.valueOf(t.getProfileSequence()));
+                n.setSequence(Long.valueOf(t.getProfileSequence()));
+                valuesToSend.add(n);
+            }
 
             Collection<HandShakingInfo> values = uniqueHandShakeInfosReceived.values();
             Iterator itValues = values.iterator();
@@ -706,7 +730,7 @@ public class MulticastManager {
                     Set<String> missingMessagesSet = ImmutableSet.copyOf(missingMessages);
                     missingMessages = null;
                     for (String m : missingMessagesSet) {
-                        HandShakingInfo n = new HandShakingInfo(t.getUserId(), t.getDeviceId(), t.getSequence(), null);
+                        HandShakingInfo n = new HandShakingInfo(t.getUserId(), t.getDeviceId(), t.getSequence(), null, null);
                         n.setFrom(t.getFrom());
                         n.setStartingSequence(Long.valueOf(m));
                         n.setSequence(Long.valueOf(m));

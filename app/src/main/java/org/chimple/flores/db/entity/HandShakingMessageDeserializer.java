@@ -18,26 +18,26 @@ public class HandShakingMessageDeserializer implements JsonDeserializer<HandShak
 
         final JsonObject jsonObject = json.getAsJsonObject();
 
-        final JsonElement jsonMessageType = jsonObject.get("message_type");
+        final JsonElement jsonMessageType = jsonObject.get("mt");
         String messageType = "";
         if (jsonMessageType != null) {
             messageType = jsonMessageType.getAsString();
         }
 
-        final JsonElement jsonFrom = jsonObject.get("from");
+        final JsonElement jsonFrom = jsonObject.get("f");
         String from = "";
         if (jsonFrom != null) {
             from = jsonFrom.getAsString();
         }
 
-        final JsonElement jsonReply = jsonObject.get("reply");
+        final JsonElement jsonReply = jsonObject.get("r");
         String reply = "";
         if (jsonReply != null) {
             reply = jsonReply.getAsString();
         }
 
 
-        HandShakingInfo[] infos = context.deserialize(jsonObject.get("infos"), HandShakingInfo[].class);
+        HandShakingInfo[] infos = context.deserialize(jsonObject.get("i"), HandShakingInfo[].class);
         final HandShakingMessage handShakingMessage = new HandShakingMessage(from, messageType, reply, new ArrayList(Arrays.asList(infos)));
         return handShakingMessage;
     }

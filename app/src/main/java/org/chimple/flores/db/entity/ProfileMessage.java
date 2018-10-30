@@ -6,20 +6,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class ProfileMessage {
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("user_id")
+    @SerializedName("u")
     String userId;
 
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("device_id")
+    @SerializedName("d")
     String deviceId;
 
 
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("message_type")
+    @SerializedName("mt")
     String messageType;
 
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("data")
+    @SerializedName("d")
     String data;
 
     public ProfileMessage(String userId, String deviceId, String messageType, String data) {

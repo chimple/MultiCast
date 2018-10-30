@@ -243,7 +243,9 @@ public class ExampleInstrumentedTest {
         seedInitialDataForE();
         String serializedHandShakingMessage = p2pDBAPI.serializeHandShakingMessage(false);
         //assertEquals(serializedHandShakingMessage, "{\"from\":\"E-device\",\"infos\":[{\"deviceId\":\"A-device\",\"missingMessages\":\"4,5,6\",\"sequence\":10,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"missingMessages\":\"1,2,3,4,5,6\",\"sequence\":10,\"userId\":\"B\"},{\"deviceId\":\"E-device\",\"missingMessages\":\"\",\"sequence\":10,\"userId\":\"E\"}],\"message_type\":\"handshaking\",\"reply\":\"false\"}");
-        String handShakeMessageJSON = "{\"from\":\"E-device\",\"infos\":[{\"deviceId\":\"A-device\",\"missingMessages\":\"00111\",\"sequence\":6,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"missingMessages\":\"0011\",\"sequence\":4,\"userId\":\"B\"},{\"deviceId\":\"E-device\",\"missingMessages\":\"11111\",\"sequence\":10,\"userId\":\"E\"}],\"message_type\":\"handshaking\",\"reply\":\"false\"}";
+        //String handShakeMessageJSON = "{\"from\":\"E-device\",\"infos\":[{\"deviceId\":\"A-device\",\"missingMessages\":\"00111\",\"sequence\":6,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"missingMessages\":\"0011\",\"sequence\":4,\"userId\":\"B\"},{\"deviceId\":\"E-device\",\"missingMessages\":\"11111\",\"sequence\":10,\"userId\":\"E\"}],\"message_type\":\"handshaking\",\"reply\":\"false\"}";
+        String handShakeMessageJSON = "{\"f\":\"0f74666c-0492-4285-a17f-fc67503940a6\",\"i\":[{\"d\":\"0f74666c-0492-4285-a17f-fc67503940a6\",\"ps\":1,\"s\":1,\"u\":\"eeddae92-c43c-4e4e-a0b5-e9d9af957e52\"}],\"mt\":\"handshaking\",\"r\":\"true\"}";
+
         HandShakingMessage m = p2pDBAPI.deSerializeHandShakingInformationFromJson(handShakeMessageJSON);
         cleanData();
         List<P2PSyncInfo> p2PSyncInfos = p2pDBAPI.getInfoByUserId("E");
@@ -257,8 +259,8 @@ public class ExampleInstrumentedTest {
         seedInitialDataForD();
         String serializedHandShakingMessage = p2pDBAPI.serializeHandShakingMessage(false);
         Log.d(TAG, serializedHandShakingMessage);
-        String handShakingFromA = "{\"from\":\"A-device\",\"infos\":[{\"deviceId\":\"A-device\",\"sequence\":10,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"missingMessages\":\"11001\",\"sequence\":5,\"userId\":\"B\"},{\"deviceId\":\"C-device\",\"missingMessages\":\"01111\",\"sequence\":7,\"userId\":\"C\"}],\"message_type\":\"handshaking\"}";
-        String handShakingFromB = "{\"from\":\"B-device\",\"infos\":[{\"deviceId\":\"A-device\",\"missingMessages\":\"01111\",\"sequence\":8,\"userId\":\"A\"},{\"deviceId\":\"B-device\",\"sequence\":10,\"userId\":\"B\"},{\"deviceId\":\"C-device\",\"missingMessages\":\"01111\", \"sequence\":10,\"userId\":\"C\"}],\"message_type\":\"handshaking\"}";
+        String handShakingFromA = "{\"f\":\"A-device\",\"i\":[{\"d\":\"A-device\",\"s\":10,\"u\":\"A\"},{\"d\":\"B-device\",\"ms\":\"11001\",\"s\":5,\"u\":\"B\"},{\"d\":\"C-device\",\"ms\":\"01111\",\"s\":7,\"u\":\"C\"}],\"mt\":\"handshaking\"}";
+        String handShakingFromB = "{\"f\":\"B-device\",\"i\":[{\"d\":\"A-device\",\"ms\":\"01111\",\"s\":8,\"u\":\"A\"},{\"d\":\"B-device\",\"s\":10,\"u\":\"B\"},{\"d\":\"C-device\",\"ms\":\"01111\", \"s\":10,\"u\":\"C\"}],\"mt\":\"handshaking\"}";
 //        String handShakingFromC = "{\"from\":\"C-device\",\"infos\":[{\"deviceId\":\"B-device\",\"sequence\":3,\"userId\":\"B\"},{\"deviceId\":\"C-device\",\"sequence\":10,\"userId\":\"C\"}],\"message_type\":\"handshaking\"}";
 //        manager.parseHandShakingMessage(handShakingFromC);
         manager.parseHandShakingMessage(handShakingFromA);

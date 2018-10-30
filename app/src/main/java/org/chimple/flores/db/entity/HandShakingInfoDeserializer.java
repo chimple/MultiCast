@@ -20,7 +20,7 @@ public class HandShakingInfoDeserializer implements JsonDeserializer<HandShaking
             throws JsonParseException {
 
         final JsonObject jsonObject = json.getAsJsonObject();
-        final JsonElement jsonUserId = jsonObject.get("userId");
+        final JsonElement jsonUserId = jsonObject.get("u");
 
         String userId = null;
         if (jsonUserId != null) {
@@ -28,35 +28,23 @@ public class HandShakingInfoDeserializer implements JsonDeserializer<HandShaking
         }
 
         String deviceId = null;
-        final JsonElement jsonDeviceId = jsonObject.get("deviceId");
+        final JsonElement jsonDeviceId = jsonObject.get("d");
         if (jsonDeviceId != null) {
             deviceId = jsonDeviceId.getAsString();
         }
 
         Long sequence = 0L;
-        final JsonElement jsonSequence = jsonObject.get("sequence");
+        final JsonElement jsonSequence = jsonObject.get("s");
         if (jsonSequence != null) {
             sequence = jsonSequence.getAsLong();
         }
 
         StringBuffer missingMessages = new StringBuffer();
         String result = null;
-        final JsonElement jsonMissingMessages = jsonObject.get("missingMessages");
+        final JsonElement jsonMissingMessages = jsonObject.get("ms");
         if (jsonMissingMessages != null) {
             String missingMessages1 = jsonMissingMessages.getAsString();
             char[] bits = missingMessages1.toCharArray();
-
-//            for (int i = bits.length - 1; i > -1; i--) {
-//                char b = bits[i];
-//                if(b == '0') {
-//                    if(sequence.intValue() > SYNC_NUMBER_OF_LAST_MESSAGES) {
-//                        missingMessages.append(sequence.intValue() - SYNC_NUMBER_OF_LAST_MESSAGES + i);
-//                    } else {
-//                        missingMessages.append(sequence.intValue() -  i);
-//                    }
-//                    missingMessages.append(",");
-//                }
-//            }
 
             for (int i = 0; i < bits.length; i++) {
                 char b = bits[i];
@@ -75,7 +63,14 @@ public class HandShakingInfoDeserializer implements JsonDeserializer<HandShaking
             result = missingMessages.toString();
         }
 
-        final HandShakingInfo handShakingInfo = new HandShakingInfo(userId, deviceId, sequence, result);
+        Long profileSequence = 0L;
+        final JsonElement jsonProfileSequence = jsonObject.get("ps");
+        if (jsonProfileSequence != null) {
+            profileSequence = jsonProfileSequence.getAsLong();
+        }
+
+
+        final HandShakingInfo handShakingInfo = new HandShakingInfo(userId, deviceId, sequence, result, profileSequence);
         return handShakingInfo;
     }
 }

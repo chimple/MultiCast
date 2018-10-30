@@ -218,6 +218,10 @@ public class P2PDBApiImpl {
         return db.p2pSyncDao().fetchByUserAndDeviceAndSequence(userId, deviceId, sequence);
     }
 
+    public Long findLatestProfilePhotoId(String userId, String deviceId) {
+        return db.p2pSyncDao().findLatestProfilePhotoId(userId, deviceId);
+    }
+
     public String persistP2PSyncInfos(String p2pSyncJson) {
         String result = "";
         try {
@@ -389,12 +393,13 @@ public class P2PDBApiImpl {
             for (P2PLatestInfoByUserAndDevice info : infos) {
                 String tDeviceId = info.getDeviceId();
                 String tUserId = info.getUserId();
+                Long latestUserProfileId = db.p2pSyncDao().findLatestProfilePhotoId(tUserId, tDeviceId);
                 P2PLatestInfoByUserAndDevice[] missingRecords = db.p2pSyncDao().getMissingMessagesByUserIdAndDeviceId(tUserId, tDeviceId);
                 List<P2PLatestInfoByUserAndDevice> missingRecordsList = Arrays.asList(missingRecords);
                 Collection missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
                 String missingRecordsStr = StringUtils.join(missingSequences, ",");
                 if (info.userId != null && info.deviceId != null) {
-                    HandShakingInfo i = new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr);
+                    HandShakingInfo i = new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr, latestUserProfileId);
                     i.setFrom(P2PContext.getCurrentDevice());
                     Log.d(TAG, "handShakingInformationFromCurrentDevice: " + info.userId + " " + info.deviceId + " " + info.sequence);
                     handShakingInfos.put(info.userId, i);
@@ -417,6 +422,7 @@ public class P2PDBApiImpl {
             for (P2PLatestInfoByUserAndDevice info : infos) {
                 if (info.userId != null && info.deviceId != null) {
                     Log.d(TAG, "checking for user:" + info.userId + " fetchByUserAndDeviceBetweenSequencesand device:" + info.deviceId + " and sequence:" + info.sequence);
+                    Long latestUserProfileId = db.p2pSyncDao().findLatestProfilePhotoId(info.userId, info.deviceId);
                     P2PLatestInfoByUserAndDevice[] missingRecords = db.p2pSyncDao().getMissingMessagesByUserIdAndDeviceId(info.userId, info.deviceId);
                     String missingRecordsStr = null;
                     if (missingRecords.length > 0) {
@@ -438,7 +444,7 @@ public class P2PDBApiImpl {
 //                    Collection missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
 //                    String missingRecordsStr = StringUtils.join(missingSequences, ",");
                     Log.d(TAG, "missingRecordsStr:" + missingRecordsStr);
-                    handShakingInfos.add(new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr));
+                    handShakingInfos.add(new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr, latestUserProfileId));
                 }
             }
 
@@ -538,11 +544,12 @@ public class P2PDBApiImpl {
         P2PLatestInfoByUserAndDevice[] infos = db.p2pSyncDao().getLatestInfoAvailableByUserIdAndDeviceId();
         for (P2PLatestInfoByUserAndDevice info : infos) {
             if (info.userId != null && info.deviceId != null) {
+                Long latestUserProfileId = db.p2pSyncDao().findLatestProfilePhotoId(info.userId, info.deviceId);
                 P2PLatestInfoByUserAndDevice[] missingRecords = db.p2pSyncDao().getMissingMessagesByUserIdAndDeviceId(info.userId, info.deviceId);
                 List<P2PLatestInfoByUserAndDevice> missingRecordsList = Arrays.asList(missingRecords);
                 Collection missingSequences = CollectionUtils.collect(missingRecordsList, TransformerUtils.invokerTransformer("getSequence"));
                 String missingRecordsStr = StringUtils.join(missingSequences, ",");
-                handShakingInfos.add(new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr));
+                handShakingInfos.add(new HandShakingInfo(info.userId, info.deviceId, info.sequence, missingRecordsStr, latestUserProfileId));
             }
         }
         return handShakingInfos;

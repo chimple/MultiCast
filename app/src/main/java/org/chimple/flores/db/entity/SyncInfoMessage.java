@@ -7,15 +7,15 @@ import java.util.List;
 
 public class SyncInfoMessage {
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("message_type")
+    @SerializedName("mt")
     String messageType;
 
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("infos")
+    @SerializedName("i")
     List<P2PSyncInfo> infos;
 
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("sender")
+    @SerializedName("s")
     String sender;
 
     public SyncInfoMessage(String messageType, String sender, List<P2PSyncInfo> infos) {

@@ -23,12 +23,12 @@ public class SyncInfoRequestMessage {
     String mDeviceId;
 
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("sender")
+    @SerializedName("s")
     String sender;
 
 
     @Expose(serialize = true, deserialize = true)
-    @SerializedName("items")
+    @SerializedName("l")
     List<SyncInfoItem> items;
 
 
